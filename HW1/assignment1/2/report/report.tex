@@ -64,12 +64,51 @@
 
 \begin{document}
 \maketitle
+\textbf{Declaration:} The work submitted is our own, and
+we have adhered to the principles of academic honesty while completing and submitting this work. We have not referred to any unauthorized sources, and we have not used generative AI tools for the work submitted here.
+
+
 
 \section*{Question 1}
 
 \begin{solution}{Solution}
+  The restricted isometry constant (RIC) of a
+ matrix $A$ is defined as the smallest number $\delta_s$ such that the following is true for any $s$-sparse vector $x$:
+  \begin{equation}
+    (1-\delta_s) \lVert x \rVert^2 \leq \lVert Ax \rVert^2 \leq (1+\delta_s) \lVert x \rVert^2
+  \end{equation}
+  where $\lVert \cdot \rVert$ denotes the $\ell_2$ norm. 
+
+  We are given that $s < t$, and we need to compare $\delta_s$ and $\delta_t$. Let $x$ be an arbitrary $s$-sparse vector. Since, $x$ contains atmost $t$ zeroes, it follows that $x$ is a $t$-sparse vector as well. 
+
+  By definition of RIC, we have:
+
+  \begin{equation}
+    (1-\delta_s) \lVert x \rVert^2 \leq \lVert Ax \rVert^2 \leq (1+\delta_s) \lVert x \rVert^2
+  \end{equation}
+
+  Since $x$ is $t$-sparse, we have:
+
+  \begin{equation}
+    (1-\delta_t) \lVert x \rVert^2 \leq \lVert Ax \rVert^2 \leq (1+\delta_t) \lVert x \rVert^2
+  \end{equation}
+
+  Now, by definition of RIC, we have that $\delta_s$ is the smallest number satisfying (2), and $\delta_t$ is the smallest number satisfying (3). 
+  
+  So, (2) is a special case of (3), and hence $\delta_s \leq \delta_t$.
+
+  So, both $(i) \delta_s < \delta_t$ and $(iii) \delta_s = \delta_t$ can be true.
 
 \end{solution}
+
+
+
+
+
+
+
+
+
 
 
 \end{document}
