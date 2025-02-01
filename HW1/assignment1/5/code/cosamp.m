@@ -14,7 +14,7 @@ original_image = zeros(image_size, image_size, length(k_values));
 reconstructed_images_1 = zeros(image_size, image_size, length(m_values), length(plot_k_idxs));
 reconstructed_images_2 = zeros(image_size, image_size, length(k_values), length(plot_m_idxs));
 
-for k = k_values
+for idx_k = 1:length(k_values)
     k = k_values(idx_k);
     coefficients = zeros(image_size^2, 1);
     selected_indices = randperm(image_size^2, k);
@@ -23,7 +23,7 @@ for k = k_values
     vec_f = psi * coefficients;
     f = reshape(vec_f, image_size, image_size);
     original_image(:, :, idx_k) = f;
-    for m = m_values
+    for idx_m = 1:length(m_values)
         m = m_values(idx_m);
         phi = randi([0, 1], m, image_size^2);
         phi(phi == 0) = -1;
