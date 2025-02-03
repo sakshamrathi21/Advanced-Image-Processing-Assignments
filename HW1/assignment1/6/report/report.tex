@@ -64,10 +64,75 @@
 
 \begin{document}
 \maketitle
+\textbf{Declaration:} The work submitted is our own, and
+we have adhered to the principles of academic honesty while completing and submitting this work. We have not referred to any unauthorized sources, and we have not used generative AI tools for the work submitted here.
 
 \section*{Question 1}
 
 \begin{solution}{Solution}
+
+  \subsection*{(a) Probability that $\Omega \cap F = \emptyset$}
+ 
+  The total number of $|\Omega|$-element subsets chosen from $n$ frequencies is:
+  \begin{equation}
+  \binom{n}{|\Omega|}.
+  \end{equation}
+  The number of ways to choose $|\Omega|$ elements outside the $|F|$ frequencies is:
+  \begin{equation}
+  \binom{n - |F|}{|\Omega|}.
+  \end{equation}
+  Thus, the probability that $\Omega$ does not intersect $F$ is given by:
+  \begin{equation}
+  P(\Omega \cap F = \emptyset) = \frac{\binom{n - |F|}{|\Omega|}}{\binom{n}{|\Omega|}}.
+  \end{equation}
+   
+  \subsection*{(b) Finding an Upper Bound on $P(\Omega \cap F = \emptyset)$}
+  Expanding the binomial coefficient ratio:
+  \begin{equation}
+  P(\Omega \cap F = \emptyset) = \prod_{j=0}^{|\Omega|-1} \left(1 - \frac{|F|}{n - j}\right).
+  \end{equation}
+  Using the inequality $1 - u \leq e^{-u}$, we obtain:
+  \begin{equation}
+  P(\Omega \cap F = \emptyset) \leq \exp\left(-|F| \sum_{j=0}^{|\Omega|-1} \frac{1}{n - j}\right).
+  \end{equation}
+  Approximating the sum as an integral:
+  \begin{equation}
+  \sum_{j=0}^{|\Omega|-1} \frac{1}{n - j} \geq \int_{n - |\Omega|}^{n} \frac{1}{x}dx = \ln \left(\frac{n}{n - |\Omega|}\right).
+  \end{equation}
+  Thus,
+  \begin{equation}
+  P(\Omega \cap F = \emptyset) \leq \exp\left(-|F| \ln \left(\frac{n}{n - |\Omega|}\right)\right).
+  \end{equation}
+
+  This gives us the desired upper bound on the probability that $\Omega$ does not intersect $F$.
+  \begin{equation}
+    P(\Omega \cap F = \emptyset) \leq \left(1 - \frac{|\Omega|}{n}\right)^{|F|}
+  \end{equation}
+   
+  \subsection*{(c) Deriving a Lower Bound on $|\Omega|$}
+   
+  We require $P(\Omega \cap F = \emptyset) \leq n^{-M}$ for some $M > 0$. This ensures reconstruction is possible with probability at least $1 - n^{-M}$.
+  \begin{equation}
+  \exp\left(-|F| \ln \left(\frac{n}{n - |\Omega|}\right)\right) \leq n^{-M}.
+  \end{equation}
+  Taking the natural logarithm:
+  \begin{equation}
+  -|F| \ln \left(\frac{n}{n - |\Omega|}\right) \leq -M \ln n.
+  \end{equation}
+  Rearrange:
+  \begin{equation}
+  |F| \ln \left(\frac{n}{n - |\Omega|}\right) \geq M \ln n.
+  \end{equation}
+  Using the approximation $\ln(1 - x) \approx -x$ for small $x$, we get:
+  \begin{equation}
+  |F| \frac{|\Omega|}{n} \geq M \ln n.
+  \end{equation}
+  Solving for $|\Omega|$:
+  \begin{equation}
+  |\Omega| \geq \frac{M n \ln n}{|F|}.
+  \end{equation}
+  Thus, the required number of sampled frequencies grows logarithmically with $n$ and is inversely proportional to $|F|$.
+   
 
 \end{solution}
 

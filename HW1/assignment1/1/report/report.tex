@@ -64,10 +64,108 @@
 
 \begin{document}
 \maketitle
+\textbf{Declaration:} The work submitted is our own, and
+we have adhered to the principles of academic honesty while completing and submitting this work. We have not referred to any unauthorized sources, and we have not used generative AI tools for the work submitted here.
 
 \section*{Question 1}
 
 \begin{solution}{Solution}
+ 
+Let $A \in \mathbb{R}^{m \times n}$ be a sensing matrix with the restricted isometry property (RIP) of order $s$, where $S \subseteq \{1,2,\dots,n\}$ and $A_S \in \mathbb{R}^{m \times |S|}$ is the submatrix formed by the columns indexed by $S$.
+  
+From the Restricted Isometry Property:
+\begin{equation}
+(1 - \delta_s)\|x\|_2^2 \leq \|A x\|_2^2 \leq (1 + \delta_s)\|x\|_2^2, \quad \forall x \in \mathbb{R}^n, \quad \text{with support}(x) \leq s.
+\end{equation}
+  
+Since $x \in \mathbb{R}^n$ can be viewed as $y \in \mathbb{R}^{|S|}$, we have:
+\begin{equation}
+    Ax = A_S y \Rightarrow \|Ax\|_2^2 = \|A_S y\|_2^2.
+\end{equation}
+  
+Equivalently, for any subset $S \subseteq \{1,2,\dots,n\}$ and $y \in \mathbb{R}^{|S|}$:
+\begin{equation}
+(1 - \delta_s)\|y\|_2^2 \leq \|A_S y\|_2^2 \leq (1 + \delta_s)\|y\|_2^2.
+\end{equation}
+  
+Since:
+\begin{equation}
+\|A_S y\|_2^2 = y^T A_S^T A_S y,
+\end{equation}
+  
+where $A_S^T A_S$ is a positive semi-definite matrix, let $\lambda_{\min}$ and $\lambda_{\max}$ be its minimum and maximum eigenvalues, respectively.
+  
+\textbf{Notation:}
+\begin{align*}
+    \lambda_{\min}(A_S^T A_S) & \text{ : Minimum eigenvalue of } A_S^T A_S, \\
+    \lambda_{\max}(A_S^T A_S) & \text{ : Maximum eigenvalue of } A_S^T A_S.
+\end{align*}
+  
+% \textbf{Statement:}
+\begin{equation}
+    \lambda_{\min}(A_S^T A_S) \|y\|_2^2 \leq y^T A_S^T A_S y \leq \lambda_{\max}(A_S^T A_S) \|y\|_2^2.
+\end{equation}
+  
+% \textbf{Proof:} 
+To prove equation (5), we propose the following argument. Let $M = A_S^T A_S$, which is a positive semi-definite (PSD) matrix. Then there exists an orthogonal matrix $Q$ such that:
+\begin{equation}
+    M = Q \Lambda Q^T,
+\end{equation}
+where $\Lambda$ is a diagonal matrix with eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$.
+  
+For any $x \in \mathbb{R}^n$:
+\begin{equation}
+    x^T M x = x^T Q \Lambda Q^T x = (Q^T x)^T \Lambda (Q^T x).
+\end{equation}
+  
+Define $Q^T x = z$, then:
+\begin{equation}
+    x^T M x = \sum_{i=1}^{n} \lambda_i z_i^2.
+\end{equation}
+  
+Since $\lambda_{\min} \leq \lambda_i \leq \lambda_{\max}$ for all $i$, we obtain:
+\begin{equation}
+    \lambda_{\min} \sum_{i=1}^{n} z_i^2 \leq \sum_{i=1}^{n} \lambda_i z_i^2 \leq \lambda_{\max} \sum_{i=1}^{n} z_i^2.
+\end{equation}
+  
+Since $\|Q^T x\|_2^2 = \|x\|_2^2$, it follows that:
+\begin{equation}
+    \lambda_{\min} \|x\|_2^2 \leq x^T M x \leq \lambda_{\max} \|x\|_2^2.
+\end{equation}
+  
+Thus:
+\begin{equation}
+    \lambda_{\min}(A_S^T A_S) \|y\|_2^2 \leq y^T A_S^T A_S y \leq \lambda_{\max}(A_S^T A_S) \|y\|_2^2.
+\end{equation}
+  
+From the RIP condition:
+\begin{equation}
+    1 - \delta_s \leq \lambda_{\min}(A_S^T A_S), \quad 1 + \delta_s \geq \lambda_{\max}(A_S^T A_S).
+\end{equation}
+  
+Taking the minimum and maximum over all subsets $S$ of size at most $s$:
+\begin{align*}
+    \lambda_{\min} &= \min_{S \subseteq \{1,2,\dots,n\}, |S| \leq s} \lambda_{\min}(A_S^T A_S),\\
+    \lambda_{\max} &= \max_{S \subseteq \{1,2,\dots,n\}, |S| \leq s} \lambda_{\max}(A_S^T A_S).
+\end{align*}
+  
+Thus:
+\begin{equation}
+    \lambda_{\min} \geq 1 - \delta_s \Rightarrow \delta_s \geq 1 - \lambda_{\min},
+\end{equation}
+\begin{equation}
+    \lambda_{\max} \leq 1 + \delta_s \Rightarrow \delta_s \geq \lambda_{\max} - 1.
+\end{equation}
+  
+Taking the maximum of both inequalities, we conclude:
+\begin{equation}
+    \delta_s = \max(1 - \lambda_{\min}, \lambda_{\max} - 1).
+\end{equation}
+  
+Thus, the smallest possible RIP constant of order $s$ is given by:
+\begin{equation}
+    \delta_s = \max(1 - \lambda_{\min}, \lambda_{\max} - 1).
+\end{equation}
 
 \end{solution}
 
