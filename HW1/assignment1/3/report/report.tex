@@ -64,11 +64,33 @@
 
 \begin{document}
 \maketitle
+\textbf{Declaration:} The work submitted is our own, and
+we have adhered to the principles of academic honesty while completing and submitting this work. We have not
+referred to any unauthorized sources, and we have not used generative AI tools for the work submitted here.
 
-\section*{Question 1}
+\section*{Question 3}
 
 \begin{solution}{Solution}
-
+The P0 problem wants to find a solution $\theta$ to the following:
+\[
+\min ||\theta||_0 \hspace{3pt}\text{such that} \hspace{4pt}y=A\theta
+\]
+Say there exist two distinct $s$-sparse solutions $\theta$ and $\theta'$ both satisfying $A\theta = A\theta' = y$.\\
+Consider $\Delta = \theta-\theta'$. $\Delta$ is $2s$-sparse, since $\theta$ and $\theta'$ are $s$-sparse. Note that $A(\theta - \theta') = A\Delta = 0$\\
+The RIC of a matrix $A$ is the smallest number $\delta_2s$ such that the following is true for any $2s$-sparse vector x:
+\[
+(1-\delta_{2s})||x||_2^2 \leq ||Ax||_2^2 \leq (1+\delta_{2s})||x||_2^2 
+\]
+Now, $\Delta$ is a $2s$-sparse vector in the null space of $A$. Hence, we have
+\[
+(1-\delta_{2s})||\Delta||_2^2 \leq ||A\Delta||_2^2 \leq (1+\delta_{2s})||\Delta||_2^2
+\]
+Now, we have $A\Delta = 0$, hence $||A\Delta||_2^2 = 0$. Thus,
+\[
+(1-\delta_{2s})||\Delta||_2^2 \leq 0
+\]
+Hence, if $\delta_{2s} < 1$, then $||\Delta||_2^2$ has to be zero, which means $\theta = \theta'$, and only a unique solution exists.\\
+Hence, for the P0 problem, $\delta_{2s} < 1$ must hold.
 \end{solution}
 
 
