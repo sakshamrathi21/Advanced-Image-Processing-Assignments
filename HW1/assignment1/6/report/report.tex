@@ -108,6 +108,69 @@ we have adhered to the principles of academic honesty while completing and submi
   \begin{equation}
     P(\Omega \cap F = \emptyset) \leq \left(1 - \frac{|\Omega|}{n}\right)^{|F|}
   \end{equation}
+
+  \subsubsection*{Derivation of the Lower Bound}
+ 
+Let the total number of frequencies be \( n \) and let the support set of the Fourier transform be \( F \) with cardinality \(|F|\). We select a set \( \Omega \) of \(|\Omega|\) frequencies uniformly at random (without replacement) from the \( n \) available frequencies. The probability that \(\Omega\) contains none of the frequencies in \( F \) (i.e., \( \Omega \cap F = \varnothing \)) is given by
+\begin{equation}
+P\left(\Omega\cap F=\varnothing\right)=\frac{\binom{n-|F|}{|\Omega|}}{\binom{n}{|\Omega|}}.
+\end{equation}
+This expression can be rewritten as a product:
+\begin{equation}
+P\left(\Omega\cap F=\varnothing\right) = \prod_{j=0}^{|\Omega|-1} \frac{n-|F|-j}{n-j}.
+\end{equation}
+Notice that each term in the product can be expressed as
+\begin{equation}
+\frac{n-|F|-j}{n-j} = 1 - \frac{|F|}{n-j}.
+\end{equation}
+ 
+Taking the logarithm of \( P \) gives
+\begin{equation}
+\log P = \sum_{j=0}^{|\Omega|-1} \log\left(1-\frac{|F|}{n-j}\right).
+\end{equation}
+For small \( x \) (with \( x = \displaystyle\frac{|F|}{n-j} \)), we use the inequality
+\begin{equation}
+\log(1-x) \ge -2x,
+\end{equation}
+which is valid when \( x \) is sufficiently small. Applying this inequality to each term yields
+\begin{equation}
+\log P \ge -2\sum_{j=0}^{|\Omega|-1} \frac{|F|}{n-j}.
+\end{equation}
+ 
+Bounding the sum:
+\begin{equation}
+\sum_{j=0}^{|\Omega|-1} \frac{1}{n-j} = \frac{1}{n} + \frac{1}{n-1} + \cdots + \frac{1}{n-|\Omega|+1}.
+\end{equation}
+Since each term in the sum is at most \(\displaystyle\frac{1}{n-|\Omega|+1}\), we have the bound
+\begin{equation}
+\sum_{j=0}^{|\Omega|-1} \frac{1}{n-j} \le \frac{|\Omega|}{n-|\Omega|}.
+\end{equation}
+Under the assumption that \(|\Omega|\ll n\), we have \( n-|\Omega| \approx n \), so
+\begin{equation}
+\sum_{j=0}^{|\Omega|-1} \frac{1}{n-j} \le \frac{|\Omega|}{n}.
+\end{equation}
+Thus, we obtain
+\begin{equation}
+\log P \ge -2\,|F|\,\frac{|\Omega|}{n}.
+\end{equation}
+Exponentiating both sides gives
+\begin{equation}
+P \ge \exp\left(-\frac{2|F|\,|\Omega|}{n}\right).
+\end{equation}
+ 
+The exponential can be expressed as
+\begin{equation}
+\exp\left(-\frac{2|F|\,|\Omega|}{n}\right) = \left(\exp\left(-\frac{2|\Omega|}{n}\right)\right)^{|F|},
+\end{equation}
+and using the approximation for small \( x \) that \(\exp(-x) \approx 1-x\), we obtain
+\begin{equation}
+\exp\left(-\frac{2|\Omega|}{n}\right) \approx 1-\frac{2|\Omega|}{n}.
+\end{equation}
+Thus, we conclude that
+\begin{equation}
+P\left(\Omega\cap F=\varnothing\right) \ge \left(1-\frac{2|\Omega|}{n}\right)^{|F|}.
+\end{equation}
+
    
   \subsection*{(c) Deriving a Lower Bound on $|\Omega|$}
    
