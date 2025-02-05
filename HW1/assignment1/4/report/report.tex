@@ -64,11 +64,47 @@
 
 \begin{document}
 \maketitle
-
-\section*{Question 1}
+\textbf{Declaration:} The work submitted is our own, and
+we have adhered to the principles of academic honesty while completing and submitting this work. We have not
+referred to any unauthorized sources, and we have not used generative AI tools for the work submitted here.
+\section*{Question 4}
 
 \begin{solution}{Solution}
+\textbf{Reference: }\\
+Joachim H.G. Ender\\
+On compressive sensing applied to radar, Signal Processing, Volume 90, Issue 5, 2010, Pages 1402-1414,
+ISSN 0165-1684, https://doi.org/10.1016/j.sigpro.2009.11.009.\\
+(https://www.sciencedirect.com/science/article/pii/S0165168409004721)\\
 
+\hspace{-19pt}\textbf{Application: }\\
+The research paper explores the application of compressed sensing (CS) to radar imaging. We will explore its application particularly in Inverse Synthetic Aperture Radar (ISAR), which is used to generate high-resolution images of flying targets such as aircraft and satellites. The traditional method requires a high sampling rate, according to the Shannon-Nyquist theorem. In contrast, CS allows for a framework for detection of sparse signals with a reduced number of samples.\\
+\\
+\hspace{-19pt}\textbf{How Measurements are Acquired: }\\
+After compensation of the translational motion of a
+reference point on the target, the normalized signal of a scatterer at the coordinates $(x,y)$ measured in an object coordinate system with its origin at the reference point and the $z$-axis aligned to the axis of relative rotation with respect to the radar, is given by
+\[
+s(k,\phi;x,y) = \exp{(-j2k(x\cos{\phi}+y\sin{\phi}))}
+\]
+where $\phi$ is the angle between the x-axis and the direction to the radar. Assuming that the reflectivity is concentrated to grid points $(x_n,y_n)$ in the image plane, the signal measured at radar state $(k,\phi)$ is
+\[
+z(k,\phi) = \sum_{n=1}^N{a_ns(k,\phi;x_n,y_n)}
+\]
+Measuring the pairs $(k_m,\phi_m), m=1\dots M$, we get
+\[
+\textbf{z} = \{z(k_m,\phi_m)\}_{m=1}^M = \textbf{Sa}
+\]
+\\
+\hbox{}
+\\
+
+\hspace{-19pt}\textbf{Underlying Unknown Signal: }\\
+The underlying unknown signal is the vector \textbf{a} $= (a_1,\dots,a_N)^t$, which is the reflectivity distribution vector of the target. We need to find this vector using CS techniques and algorithms. \\
+
+\hspace{-19pt}\textbf{Measurement Matrix: }\\
+The measurement matrix here is \textbf{S}, and it is defined as follows
+\[
+\textbf{S}_{mn} = s(k_m,\phi_m;x_n,y_n), m = 1,\dots,M, n = 1,\dots,N
+\]
 \end{solution}
 
 
