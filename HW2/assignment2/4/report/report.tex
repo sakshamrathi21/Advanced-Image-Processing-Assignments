@@ -69,8 +69,58 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \section*{Question 4}
 
-\begin{solution}{Solution}
+\begin{solution}{Part (a)}
+  We are given a matrix $A$ and a vector $v$ such that $Av = 0$. The condition $||v_S||_1 \leq ||v_{\bar{S}}||_1$ is true for set $S$ that contains the indices of the $s$ largest absolute value entries of $v$. 
 
+  We will prove that this is true for any other set $S$ such that $|S| \leq s$. 
+
+  Let us assume to the contrary that there exists a set $R$ such that $|R| = k \leq s$ and $||v_R||_1 > ||v_{\bar{R}}||_1$.
+
+  By definition, $S$ contains the indices of the $s$ largest absolute value entries of $v$, meaning that $\sum_{i\in S}|v_i|$ is maximized over all subsets of size $s$. Moreover, the set $R$ has a cardinality of $k \leq s$, therefore, $\sum_{i\in R}|v_i| \leq \sum_{i\in S}|v_i|$. 
+
+  Combining these three inequalities, we get:
+\begin{equation}
+  ||v_{\bar{S}}||_1 \geq ||v_S||_1 \geq ||v_R||_1 > ||v_{\bar{R}}||_1
+\end{equation}
+
+From above, we get $||v_{\bar{S}}||_1 + ||v_S||_1 > ||v_R||_1 + ||v_{\bar{R}}||_1$. However, we also have $||v_{\bar{S}}||_1 + ||v_S||_1 = ||v||_1 = ||v_R||_1 + ||v_{\bar{R}}||_1$. Therefore, we have a contradiction, and the assumption that there exists a set $R$ such that $|R| = k \leq s$ and $||v_R||_1 > ||v_{\bar{R}}||_1$ is false.
+
+\end{solution}
+
+\begin{solution}{Part (b)}
+  We define $\sigma_{s,1} = inf_{||w_0|| \leq s}||v-w||_1$. We need to minimize the $l_1$ norm of $v-w$ over all vectors $w$ that have at most $s$ non-zero entries. For this, we can choose $w$ to be the vector $v$ with all but the $s$ largest absolute value entries set to zero (a greedy choice). Now, the value of $\sigma_{s,1}$ is equal to the absolute sum of $n-s$ entries of $v$. (This is somewhat similar to what we had taken in the previous part.)
+
+  We need to prove that MNSP implies that $||v||_1 \leq 2\sigma_{s,1}$. From MNSP, we have that if $v \in nullspace(A) - \{0\}$, then $||v_S||_1 \leq ||v_{\bar{S}}||_1$. We can write $||v||_1 = ||v_S||_1 + ||v_{\bar{S}}||_1$ (this is true for any set $S$, as the indices of $v$ can be  exhaustively partitioned into $S$ and $\bar{S}$). So, this property also holds for the set $S$ which contains $s$ largest absolute value entries of $v$. 
+
+  Now, we have $\sigma_{s,1} = ||v_{\bar{S}}||_1$ (for such a set $S$). Also, we have:
+
+  \[
+    ||v_S||_1 \leq ||v_{\bar{S}}||_1 = \sigma_{s,1}
+  \]
+
+  The above is true for a matrix which satisfy MNSP. Therefore:
+
+  \[
+    ||v||_1 = ||v_S||_1 + ||v_{\bar{S}}||_1 \leq 2\sigma_{s,1}
+  \]
+\end{solution}
+
+\begin{solution}{Part (c)}
+  Now we need to prove:
+  Given a matrix $A \in \mathbb{R}^{m\times n}$, any s-sparse vector $x \in \mathbb{R}$ is a unique solution to the $P1$ problem with the constraint $y = Ax$ iff $A$ satisfies the MNSP of order $s$. There are two parts of this proof (for both directions).
+
+  \subsection*{$A$ satisfies MNSP $\implies$ $x$ is a unique solution to $P1$}
+  The P1 problem is given by:
+  \[
+    \min_{z}||z||_1 \quad \text{subject to} \quad Az = y
+  \]
+  Assume to the contrary that there exists another $s$-sparse vector $x'$ such that $Ax' = y$ and $$||x||_1 = ||x'||_1$$ (else we can pick one of them as the unique solution). 
+
+  Since, both $x$ and $x'$ are $s-sparse$, let $S$ and $S'$ be the support sets of $x$ and $x'$ respectively. We have $||x||_1 = ||x'||_1 \implies ||x_S||_1 = ||x'_{S'}||_1$ (as other enties are 0). Let us take $v = x - x'$. We have $Av = 0$ (as $Ax = Ax'$). Since, $x$ and $x'$ are $s$-sparse, $v$ is $2s$-sparse. 
+
+  From the previous part (since $A$ satisfies MNSP of order $s$), we have $||v_R||_1 \leq ||v_{\bar{R}}||_1$, for all subsets $R$ of size $|R| \leq s$. Let us take $R$ to be the indices corresponding to the $s$ largest absolute value entries of $v$. Now, since $v$ is $2s-sparse$, $||v_{\bar{R}}||_1$ is the sum of remaining $t \leq s$ non-zero entries of $v$ (after we have chosen the $s$ largest absolute value entries).
+  
+  Now, since we have already chosen $R$ to contain the $s$ largest absolute value entries of $v$, we have $||v_R||_1 \geq ||v_{\bar{R}}||_1$ (because $\bar{R}$ can't contain values higher than $R$). This leaves us with the case that $||v_R||_1 = ||v_{\bar{R}}||_1$. This is essentially the case, where $v$ contains exactly $2s$ non-zero entries and all of them are equal (as the sum of largest $s$ is equal to the sum of smallest $s$ values). 
 \end{solution}
 
 
