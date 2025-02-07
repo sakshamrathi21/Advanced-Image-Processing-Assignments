@@ -1,5 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{xcolor}
+\usepackage{hyperref}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{geometry}
 \usepackage{fancyhdr}
@@ -69,8 +70,22 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \section*{Question 3}
 
-\begin{solution}{Solution}
+\begin{solution}{Research Paper Chosen}
+  We have chosen the research paper \href{https://arxiv.org/pdf/2011.10704}{Neural Group Testing to Accelerate Deep Learning} by authors \textbf{Weixin Liang and James Zou} from Stanford University. The paper was published on $9^th$ May 2021 (a copy attached in this folder).
+\end{solution}
 
+\begin{solution}{The specific ML/DS problem targeted in the paper}
+  The paper addresses the computational challenges associated with deep neural networks, particularly the high inference costs when processing large datasets. The authors propose a method to accelerate neural network inference by testing groups of samples simultaneously, thereby reducing the number of forward passes required. This approach is especially beneficial in tasks like image moderation, where the goal is to detect rare inappropriate images efficiently. They found that neural group testing can group up to 16 images in one forward pass and reduce the overall computation cost by over 73\%.
+\end{solution}
+
+\begin{solution}{Some finer details}
+  Groups of samples that test negative are ruled out, which saves testing many people individually. If a group tests positive, samples in that group are then retested adaptively.
+  
+  {\bf Unknown Signal Vector:} Represents the set of input samples, each labeled as either containing the target feature (e.g., an inappropriate image) or not.
+
+  {\bf Pooling Matrix:} Defines how input samples are combined into groups for testing. Each row corresponds to a group test, and each column represents an input sample. An entry of `1' indicates the inclusion of a sample in a particular group, while `0' indicates its exclusion.
+
+  {\bf Measurement Vector:} Contains the outcomes of the group tests. A positive result indicates that at least one sample in the group possesses the target feature, while a negative result signifies that none of the samples in the group have the feature.
 \end{solution}
 
 
