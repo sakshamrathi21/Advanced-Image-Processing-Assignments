@@ -1,0 +1,44 @@
+\title{Assignment 2: CS 754, Advanced Image Processing}
+\author{}
+\date{Due date: 17th Feb before 11:55 pm}
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,soul,xcolor}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{ulem}
+\usepackage[margin=0.5in]{geometry}
+\begin{document}
+\maketitle
+
+\textbf{Remember the honor code while submitting this (and every other) assignment. All members of the group should work on and \emph{understand} all parts of the assignment. We will adopt a \textbf{zero-tolerance policy} against any violation.}
+\\
+\\
+\textbf{Submission instructions:} You should ideally type out all the answers in MS office or Openoffice (with the equation editor) or, more preferably, using Latex. In either case, prepare a pdf file. Create a single zip or rar file containing the report, code and sample outputs and name it as follows: A2-IdNumberOfFirstStudent-IdNumberOfSecondStudent-IdNumberOfThirdStudent.zip. (If you are doing the assignment alone, the name of the zip file is A2-IdNumber.zip. If it is a group of two students, the name of the file should be  A2-IdNumberOfFirstStudent-IdNumberOfSecondStudent.zip). Upload the file on moodle BEFORE 11:55 pm on 17th Feb, which is the time that the submission is due. No assignments will be accepted after a cutoff deadline of 10 am on 18th Feb. Note that only one student per group should upload their work on moodle, although all group members will receive grades. Please preserve a copy of all your work until the end of the semester. \emph{If you have difficulties, please do not hesitate to seek help from me.} The time period between the time the submission is due and the cutoff deadline is to accommodate for any unprecedented issues. But no assignments will accepted after the cutoff deadline. 
+
+\begin{enumerate}
+\item Refer to Theorem 1 and its proof in the paper `The restricted isometry property and its implications for compressed sensing', a copy of which is placed in the homework folder. This theorem is same as Theorem 3 in our lecture slides. Its proof is given in this paper. Your task is to justify various steps of the proof using standard equalities and inequalities. There are 16 steps in all, and each step carries 2 points. \textsf{[32 points]} 
+
+\item Your task here is to implement the ISTA algorithm:
+\begin{enumerate}
+\item Consider the `Barbara' image from the homework folder. Add iid Gaussian noise of mean 0 and variance 4 (on a [0,255] scale) to it, using the `randn' function in MATLAB. Thus $\boldsymbol{y} = \boldsymbol{x} + \boldsymbol{\eta}$ where $\boldsymbol{\eta} \sim \mathcal{N}(0,4)$. You should obtain $\boldsymbol{x}$ from $\boldsymbol{y}$ using the fact that patches from $\boldsymbol{x}$ have a sparse or near-sparse representation in the 2D-DCT basis. 
+\item Divide the image shared in the homework folder into patches of size $8 \times 8$. Let $\boldsymbol{x_i}$ be the vectorized version of the $i^{th}$ patch. Consider the measurement $\boldsymbol{y_i} = \boldsymbol{\Phi x_i}$ where $\boldsymbol{\Phi}$ is a $32 \times 64$ matrix with entries drawn iid from $\mathcal{N}(0,1)$. Note that $\boldsymbol{x_i}$ has a near-sparse representation in the 2D-DCT basis $\boldsymbol{U}$ which is computed in MATLAB as `kron(dctmtx(8)',dctmtx(8)')'. In other words, $\boldsymbol{x_i} = \boldsymbol{U \theta_i}$ where $\boldsymbol{\theta_i}$ is a near-sparse vector. Your job is to reconstruct each $\boldsymbol{x_i}$ given $\boldsymbol{y_i}$ and $\boldsymbol{\Phi}$ using ISTA. Then you should reconstruct the image by averaging the overlapping patches. You should choose the $\alpha$ parameter in the ISTA algorithm judiciously. Choose $\lambda = 1$ (for a [0,255] image). Display the reconstructed image in your report. State the RMSE given as $\|X(:)-\hat{X}(:)\|_2/\|X(:)\|_2$ where $\hat{X}$ is the reconstructed image and $X$ is the true image. Repeat this with the `goldhill' image (take the top-left portion of size 256 by 256 only). \textsf{[12 points]}
+\item Implement both the above cases using the FISTA algorithm from the research paper \url{https://epubs.siam.org/doi/10.1137/080716542}. \textsf{[12 points]}
+\item Read the research paper and explain in which precise mathematical sense the FISTA algorithm is faster than ISTA. Also, why is it faster than ISTA? \textsf{[12 points]}
+\end{enumerate}
+
+\item Perform a google search to find out a research paper that uses group testing in data science or machine learning. Explain (i) the specific ML/DS problem targeted in the paper, (ii) the pooling matrix, measurement vector and unknown signal vector in the context of the problem being solved in this paper, (iii) the algorithm used in the paper to solve this problem. You can also refer to references within chapter 1 of the book \url{https://arxiv.org/abs/1902.06002}. 
+\textsf{[16 points]}
+
+\item  A matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ where $m < n$ is said to satisfy the modified null space property (MNSP) relative to a set \textcolor{blue}{$S \subset [n] := \{1,2,...,n\}$} if for all $\boldsymbol{v} \in \textrm{nullspace}(\boldsymbol{A}) - \{\boldsymbol{0}\}$, we have \textcolor{blue}{$\|\boldsymbol{v}_S\|_1 < \|\boldsymbol{v}_{\bar{S}}\|_1$ where $\bar{S}$ stands for the complement of the set $S$}. The matrix $\boldsymbol{A}$ is said to satisfy MNSP of order $s$ if it satisfies the MNSP relative to any set $S \subset [n]$ where $|S| \leq s$. Now answer the following questions:
+\begin{enumerate}
+\item Consider a given matrix $\boldsymbol{A}$  and $\boldsymbol{v} \in \textrm{nullspace}(\boldsymbol{A}) - \{\boldsymbol{0}\}$. Suppose 
+the condition $\|\boldsymbol{v}_S\|_1 \leq \|\boldsymbol{v}_{\bar{S}}\|_1$ is true for set $S$ that contains the indices of the $s$ largest absolute value entries of $\boldsymbol{v}$. Then is this condition also true for any other set $S$ such that $|S| \leq s$? Why (not)?
+\item Show that the MNSP implies that $\|\boldsymbol{v}\|_1 \leq 2\sigma_{s,1}(\boldsymbol{v})$ for $\boldsymbol{v}  \in \textrm{nullspace}(\boldsymbol{A}) - \{\boldsymbol{0}\}$ where $\sigma_{s,1}(\boldsymbol{v}) := \textrm{inf}_{\|\boldsymbol{w}\|_0 \leq s} \|\boldsymbol{v} - \boldsymbol{w}\|_1$. 
+\item Given a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ of size $m \times n$, any $s$-sparse vector $\boldsymbol{x} \in \mathbb{R}^n$ is a unique solution of the P1 problem with the constraint $\boldsymbol{y} = \boldsymbol{Ax}$ if and only if $\boldsymbol{A}$ satisfies the MNSP of order $s$. 
+\end{enumerate}
+\textsf{[4+4+8=16 points]}
+
+\end{enumerate}
+\end{document}
