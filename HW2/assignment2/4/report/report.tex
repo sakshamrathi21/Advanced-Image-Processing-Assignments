@@ -122,9 +122,30 @@ From above, we get $||v_{\bar{S}}||_1 + ||v_S||_1 > ||v_R||_1 + ||v_{\bar{R}}||_
   Now, since we have already chosen $R$ to contain the $s$ largest absolute value entries of $v$, we have $||v_R||_1 \geq ||v_{\bar{R}}||_1$ (because $\bar{R}$ can't contain values higher than $R$). 
   
   This is a contradiction to the MNSP property of $A$ because $||v_R||_1 \geq ||v_{\bar{R}}||_1$ and $||v_R||_1 < ||v_{\bar{R}}||_1$ can't hold together. Therefore, $x$ is a unique solution to $P1$.
-  
+
   \subsection*{$x$ is a unique solution to $P1$ $\implies$ $A$ satisfies MNSP}
-  
+  Let us assume to the contrary that $A$ does not satisfy MNSP. This means that there exists a nonzero vector $v \in null(A)$ such that $||v_S||_1 
+  \leq ||v_{\bar{S}}||_1$ for some set $S$ of size $s$. 
+
+  Now, we consider the solution $x$ to the P1 problem. It is given that this solution is unique, that is we can't find another vector $x_1$ such that $Ax_1 = y$ and $||x_1||_1 \leq ||x||_1$.
+
+  Consider the vector $x^\top = x + v$ ($v$ is chosen from the above context). Since $Av = 0$ we have: $Ax^\top = A(x + v) = Ax + Av = Ax + 0 = Ax$. Thus, $x^\top$ is another feasible solution to the P1 problem. Since $x$ is s-sparse, let $S$ be the support set of $x$. We will now analyze the $l_1$ norm of $x^\top$:
+  \[
+  ||x^\top||_1 = ||x+v||_1
+  \]
+  We can break $||x+v||_1$ into two sets, based on the set $S$:
+
+  \[
+    ||x^\top||_1 = ||x_S+v_S||_1 + ||x_{\bar{S}}+v_{\bar{S}}||_1 = ||x_S+v_S||_1 + ||v_{\bar{S}}||_1
+  \]
+  (because $x_{\bar{S}} = 0$).
+
+  Now, let us use the traingle inequality:
+
+  \[
+    ||x^\top||_1 = ||x_S+v_S||_1 + ||v_{\bar{S}}||_1 \leq ||x_S||_1 + ||v_S||_1 + ||v_{\bar{S}}||_1
+  \]
+
 \end{solution}
 
 
