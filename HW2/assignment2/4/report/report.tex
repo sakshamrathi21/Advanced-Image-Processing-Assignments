@@ -124,18 +124,15 @@ From above, we get $||v_{\bar{S}}||_1 + ||v_S||_1 > ||v_R||_1 + ||v_{\bar{R}}||_
   This is a contradiction to the MNSP property of $A$ because $||v_R||_1 \geq ||v_{\bar{R}}||_1$ and $||v_R||_1 < ||v_{\bar{R}}||_1$ can't hold together. Therefore, $x$ is a unique solution to $P1$.
 
   \subsection*{$x$ is a unique solution to $P1$ $\implies$ $A$ satisfies MNSP}
-  Let us assume to the contrary that $A$ does not satisfy MNSP. This means that there exists a nonzero vector $v \in null(A)$ such that $||v_{S_1}||_1 \geq ||v_{\bar{S_1}}||_1$ for some set $S_1$ of size $s$. 
-
-  Now, we consider the solution $x$ to the P1 problem. It is given that this solution is unique, that is we can't find another vector $x_1$ such that $Ax_1 = y$ and $||x_1||_1 \leq ||x||_1$.
-
-  Consider the vector $x^\top = x + v$ ($v$ is chosen from the above context). Since $Av = 0$ we have: $Ax^\top = A(x + v) = Ax + Av = Ax + 0 = Ax$. Thus, $x^\top$ is another feasible solution to the P1 problem. Since $x$ is s-sparse, let $S$ be the support set of $x$. We will now analyze the $l_1$ norm of $x^\top$:
-
+  Let $v \in nullspace(A) - \{0\}$, and let $S$ be any set of indices with $|S| \leq s$. Then, we have:
   \[
-    ||x^\top||_1 = ||x_S + v_S||_1 + ||x_{\bar{S}} + v_{\bar{S}}||_1
+  Av = A(v_S + v_{\bar{S}}) = 0 \implies A(-v_{\bar{S}}) = Av_S
   \]
-
-  Since $S$ is the support set of $x$, we have $||x_{\bar{S}} + v_{\bar{S}}||_1 = ||v_{\bar{S}}||_1$. Also, $||x_S + v_S||$
-
+  Since, any s-sparse vector $x \in \mathbb{R}^n$ is a unique solution to the $P1$ problem with the constraint $y = Ax$ and $v_S$ is s-sparse, there is some $y$ for which $v_S$ is the unique solution to the $P1$ problem. But $-v_{\bar{S}}$ also satisfies the constraints of the problem because $Av_S = A(-v_{\bar{S}})$, moreover $v_S$ is the unique solution minimizing the $l_1$ norm. Therefore, we have:
+  \[
+  ||v_S||_1 < ||v_{\bar{S}}||_1
+  \]
+  This proves that $A$ satisfies MNSP.  
 \end{solution}
 
 
