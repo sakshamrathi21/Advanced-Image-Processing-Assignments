@@ -71,7 +71,7 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 3}
 
 \begin{solution}{Research Paper Chosen}
-  We have chosen the research paper \href{https://arxiv.org/pdf/2011.10704}{Neural Group Testing to Accelerate Deep Learning} by authors \textbf{Weixin Liang and James Zou} from Stanford University. The paper was published on $9^th$ May 2021 (a copy attached in this folder).
+  We have chosen the research paper \href{https://arxiv.org/pdf/2011.10704}{Neural Group Testing to Accelerate Deep Learning} by authors \textbf{Weixin Liang and James Zou} from Stanford University. The paper was published on $9^{th}$ May 2021 (a copy attached in this folder).
 \end{solution}
 
 \begin{solution}{The specific ML/DS problem targeted in the paper}
@@ -86,6 +86,54 @@ we have adhered to the principles of academic honesty while completing and submi
   {\bf Pooling Matrix:} Defines how input samples are combined into groups for testing. Each row corresponds to a group test, and each column represents an input sample. An entry of `1' indicates the inclusion of a sample in a particular group, while `0' indicates its exclusion.
 
   {\bf Measurement Vector:} Contains the outcomes of the group tests. A positive result indicates that at least one sample in the group possesses the target feature, while a negative result signifies that none of the samples in the group have the feature.
+\end{solution}
+
+\begin{solution}{Algorithm}
+  Neural Group Testing modifies a deep neural network to test multiple samples in one forward pass while preserving accuracy. The goal is to determine whether at least one positive sample exists in a batch, rather than classifying each sample individually. It has two key components:
+  \begin{itemize}
+    \item {\bf Neural Group Testing Network Design}
+    Given an individual testing network $\phi: X \rightarrow Y$ that classifies samples individually, the goal is to construct a group testing network $\Phi$ that takes a set of $M$ samples, $X=\left\{x_1, x_2, \ldots, x_M\right\}$, and predicts a positive label if at least one sample in the group is positive:
+$$
+y=\max _{1 \leq m \leq M} y_m
+$$
+where $y_m$ is the individual ground-truth label for sample $x_m$.
+Three designs for modifying the network are proposed
+\begin{itemize}
+  \item Design 1: Pixel Merge
+  
+  - Inspired by Mixup, this method averages multiple images at the pixel level:
+  $$
+  x_{\text {merged }}=\frac{1}{M} \sum_{m=1}^M x_m
+  $$
+  - The model is fine-tuned to predict a positive label if any original sample was positive.
+  - It is computationally simple but less effective due to information loss.
+  \item Design 2: Feature Merge
+  - Instead of merging at the pixel level, feature representations are extracted using the first $T$ layers of the network:
+  $$
+  \phi\left(x_m\right)=f^{(T)} \circ f^{(T-1)} \circ \cdots \circ f^{(1)}\left(x_m\right)
+  $$
+  - The aggregated feature is then passed through the remaining network layers:
+  $$
+  \Phi(X)=\rho\left(\operatorname{aggregate}\left(\left\{\phi\left(x_m\right)\right\}_{m=1}^M\right)\right)
+  $$
+  - The aggregation step (e.g., max-pooling, averaging) ensures permutation invariance.
+  \item Design 3: Tree Merge
+  - A hierarchical structure is used, recursively merging feature representations in a tree structure.
+  - Each level aggregates features of two or more samples before passing them through deeper layers.
+  - This reduces computation significantly while maintaining accuracy.
+\end{itemize}
+\item Neural Group Testing Algorithms
+To efficiently schedule testing, different group testing strategies are explored:
+\begin{itemize}
+  \item Algorithm 1: Two-Round Testing
+  - Initial tests are performed on groups of size $M$.
+  - If a group is positive, individual samples within it are tested.
+  \item Algorithm 2: Multi-Round Testing
+  - If a group is positive, it is recursively divided into smaller subgroups until individual samples are tested.
+  \item Algorithm 3: One-Round Testing
+  - Each sample is tested in two overlapping groups, and results are decoded based on group responses. 
+\end{itemize} 
+  \end{itemize}
 \end{solution}
 
 
