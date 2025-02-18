@@ -183,7 +183,7 @@ subplot(1, 3, 2);
 imshow(uint8(goldhillNoisy * 256.0));
 title("Noisy Image");
 subplot(1, 3, 3);
-imshow(uint8(reconstructedImage));
+imshow(uint8(re/home/kshitij-vaidya/CS747_Assignments/references.txtconstructedImage));
 title("Reconstructed Image");
 % Save the figure
 saveas(gcf, "FISTA_Goldhill.png");
