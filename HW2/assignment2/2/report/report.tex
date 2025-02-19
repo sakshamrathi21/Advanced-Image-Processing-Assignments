@@ -149,7 +149,7 @@ we have adhered to the principles of academic honesty while completing and submi
   \noindent The convergence rate of the FISTA algorithm is $\mathcal{O}(1/k^2)$, which is faster than the ISTA algorithm. This is why the FISTA algorithm converges faster than the ISTA algorithm and provides a better reconstruction in the same number of iterations.
 
   \subsection{Why is FISTA faster than ISTA?}
-  The key reason PISTA outperforms ISTA is because of the momentum like step which combines the information from the previous iterates. This allows the algorithm to take larger and more effective steps towards the optimal solution. The core idea of the algorithm is inspired by Nesterov's optimal gradient method. The update rule for FISTA is:
+  The key reason FISTA outperforms ISTA is because of the momentum like step which combines the information from the previous iterates. This allows the algorithm to take larger and more effective steps towards the optimal solution. The core idea of the algorithm is inspired by Nesterov's optimal gradient method. The update rule for FISTA is:
   \begin{equation}
     x_k = p_L(y_k), \quad y_{k + 1} = x_k + \left( \displaystyle\frac{t_k - 1}{t_k + 2}\right) (x_k - x_{k-1})
   \end{equation}
