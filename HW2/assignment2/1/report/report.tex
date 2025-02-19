@@ -70,7 +70,87 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 1}
 
 \begin{solution}{Solution}
+\vspace{-25pt}
+\subsection*{Step 1}
+We have, for any $y \in \mathbb{R}^m$, $||\Phi(x^*-x)||_{l_2} = ||\Phi x^*-y+y-\Phi x||_{l_2} \leq ||\Phi x^* - y||_{l_2} + ||y - \Phi x||_{l_2}$ by Triangle Inequality, i.e magnitude of sum of two vectors is always less than or equal to the sum of magnitudes of the vectors. \\
+Also, by (7) in the paper, we want to find $\tilde{x}$ subject to $||y-\Phi x|| \leq \varepsilon$. Thus, $||\Phi x^* - y||_{l_2} + ||y - \Phi x||_{l_2} \leq \varepsilon + \varepsilon = 2\varepsilon$
+Thus,
+\[
+||\phi(x^*-x)||_{l_2} \leq ||\phi x^* - y||_{l_2} + ||y - \phi x||_{l_2} \leq 2\varepsilon
+\]
 
+\subsection*{Step 2}
+
+If a vector $v$ has atmost $s$ nonzero entries, we have $||v||_{l_2} \leq \sqrt{s}||v||_{l_\infty}$, because the squared $l_2$-norm is the sum of squares of at most $s$ elements, and each term is at most $||v||_{l_\infty}$. Thus, $||h_{T_j}||_{l_2} \leq s^{1/2}||h_{T_j}||_{l_\infty}$.\\
+Now, $T_j$ consists of the largest $s$ entries of $h$ after removing the previous sets $T_0, \dots, T_{j-1}$. Thus, the largest element in $h_{T_j}$ is atmost the average of magnitude of all elements in $h_{T_{j-1}}$. Thus, $||h_{T_j}||_{l_\infty} \leq \frac{1}{s}||h_{T_{j-1}}||_{l_1}$. Combining the two results, we get the required inequality.
+\[
+||h_{T_j}||_{l_2} \leq s^{1/2}||h_{T_j}||_{l_\infty} \leq s^{-1/2}||h_{T_{j-1}}||_{l_1}
+\]
+
+\subsection*{Step 3}
+The first inequality is obvious from the result above, that $||h_{T_j}||_{l_2} \leq s^{-1/2}||h_{T_{j-1}}||_{l_1}$, and now we just add these up for $j \geq 2$. \\
+Also, $T_0^c = T_1 \bigcup T_2 \bigcup \dots$. Thus, adding all the elements of $h_{T_0^c}$ is nothing but adding all the elements from $h_{T_1}, h_{T_2},\dots$. Thus, $||h_{T_1}||_{l_1}+||h_{T_2}||_{l_1}+\dots = ||h_{T_0^c}||_{l_1}$. Combining the results, we get
+\[
+||h_{T_j}||_{l_2}\leq s^{-1/2}(||h_{T_1}||_{l_1}+||h_{T_2}||_{l_1}+\dots) \leq s^{-1/2}||h_{T_0^c}||_{l_1}
+\]
+
+\subsection*{Step 4}
+$||\sum_{j \geq 2} h_{T_j}||_{l_2} \leq \sum_{j \geq 2} ||h_{T_j}||_{l_2}$ is true, directly by applying Triangle inequality, as in Step 1. This can be generalised to any number of vectors by sequentially applying it on two vectors at a time. 
+
+\subsection*{Step 5}
+$\sum_{j \geq 2}||h_{T_j}||_{l_2} \leq s^{-1/2}||h_{T_0^c}||_{l_1}$ comes directly from Step 3. Thus, we get 
+\[
+||\sum_{j \geq 2} h_{T_j}||_{l_2} \leq \sum_{j \geq 2} ||h_{T_j}||_{l_2} \leq s^{-1/2}||h_{T_0^c}||_{l_1}
+\]
+
+\subsection*{Step 6}
+By triangle inequality, we know $|a+b| \geq |a|-|b|$. Thus, $\sum_{i\in T_0} |x_i+h_i| \geq \sum_{i \in T_0} |x_i| - \sum_{i \in T_0} |h_i| = ||x_{T_0}||_{l_1} - ||h_{T_0}||_{l_1}$.\\
+Similarly, $\sum_{i\in T_0^c} |x_i+h_i| \geq \sum_{i \in T_0^c} |h_i| - \sum_{i \in T_0^c} |x_i| = ||h_{T_0^c}||_{l_1} - ||x_{T_0^c}||_{l_1}$.\\
+Adding the two inequalities, we get 
+\[
+\sum_{i\in T_0} |x_i+h_i| + \sum_{i\in T_0^c} |x_i+h_i| \geq ||x_{T_0}||_{l_1} - ||h_{T_0}||_{l_1} + ||h_{T_0^c}||_{l_1} - ||x_{T_0^c}||_{l_1}
+\]
+
+\subsection*{Step 7}
+We have $||x||_{l_1} = ||x_{T_0}||_{l_1}+||x_{T_0^c}||_{l_1}\geq ||x_{T_0}||_{l_1} - ||h_{T_0}||_{l_1} + ||h_{T_0^c}||_{l_1} - ||x_{T_0^c}||_{l_1}$ from the previous step. \\
+Cancelling $||x_{T_0}||_{l_1}$ from both sides, and rearranging the inequality, we get 
+\[
+||h_{T_0^c}||_{l_1} \leq ||h_{T_0}||_{l_1} + 2||x_{T_0^c}||_{l_1}
+\]
+
+\subsection*{Step 8}
+We can write $h = h_{T_0} + h_{T_1} + h_{(T_0 \cup T_1)^c}$. We know that $\sum_{j \geq 2}||h_{T_j}||_{l_2} \leq s^{-1/2}||h_{T_{0}^c}||_{l_1}$.\\
+We also know that $||h_{T_0^c}||_{l_1} \leq ||h_{T_0}||_{l_1} + 2||x_{T_0^c}||_{l_1}$. \\
+Thus, we get $\sum_{j \geq 2}||h_{T_j}||_{l_2} \leq  s^{-1/2}(||h_{T_0}||_{l_1} + 2||x_{T_0^c}||_{l_1})$.\\
+Also, $||h_{(T_0\cup T_1)^c}||_{l_2} = ||\sum_{j\geq2}h_{T_j}||_{l_2} \leq  \sum_{j\geq2}(||h_{T_j}||_{l_2}) \leq s^{-1/2}(||h_{T_0}||_{l_1} + 2||x_{T_0^c}||_{l_1})$ .\\
+Note that the 2nd step is by Triangle Inequality.\\
+Applying Cauchy-Schwarz on $h_{T_0}$ and a vector with ones at the positions at which $h_{T_0}$ is non-zero, we get $||h_{T_0}||_{l_1}^2 \leq s||h_{T_0}||_{l_2}^2$. \\
+Thus, $s^{-1/2}||h_{T_0}||_{l_1} \leq ||h_{T_0}||_{l_2}$. Hence, using this, we get 
+\[
+||h_{(T_0\cup T_1)^c}||_{l_2} \leq ||h_{T_0}||_{l_2} + 2s^{-1/2}||x_{T_0^c}||_{l_1} = ||h_{T_0}||_{l_2} + 2s^{-1/2}||x-x_s||_{l_1}
+\]
+which is what is required.
+
+\subsection*{Step 9}
+The first inequality is a direct application of Cauchy Schwarz on $\Phi h_{T_0 \cup T_1}$ and $\Phi h$.
+\\
+From the problem formualtion, we know that $x^*$ is the solution to $\min_x ||x||_{l_1}$ subject to $||\Phi x - y||_{l_2} \leq \varepsilon$.\\
+From step 1, $||\Phi h||_{l_2} = ||\Phi (x^*-x)||_{l_2} \leq 2\varepsilon$.\\
+From RIP, we know that $\Phi$ satisfies the RIP with constant $\delta_{2s}$. Thus,\\ $||\Phi h_{T_0 \cup T_1}||_{l_2} \leq \sqrt{1+\delta_{2s}} ||h_{T_0 \cup T_1}||_{l_2}$. Multiplying the inequalities, we get $||\Phi h||_{l_2}||\Phi h_{T_0 \cup T_1}||_{l_2} \leq 2\varepsilon\sqrt{1+\delta_{2s}} ||h_{T_0 \cup T_1}||_{l_2}$, which is the required result.
+
+\subsection*{Step 10}
+This is a direct application of Lemma 2.1, where $x$ is $h_{T_0}$ and $x'$ is $h_{T_j}$. The proof involves using the parallelogram identity of the sum of two vectors.\\
+Thus, we have $|<\Phi h_{T_0},\Phi h_{T_1}>| \leq \delta_{2s} ||h_{T_0}||_{l_2}||h_{T_j}||_{l_2}$
+
+\subsection*{Step 11}
+Since $T_0$ and $T_1$ are disjoint, $||h_{T_0 \cup T_1 }||_{l_2}^2 = ||h_{T_0}||_{l_2}^2+||h_{T_1}||_{l_2}^2 $.\\
+Also, $(a-b)^2 \geq 0 \implies2(a^2+b^2) \geq (a+b)^2$. Substituting $a$ as $h_{T_0}$ and $b$ as $h_{T_1}$, and taking square root, we get
+\[
+2||h_{T_0 \cup T_1}||_{l_2}^2 \geq (||h_{T_0}||_{l_2}+||h_{T_1}||_{l_2})^2
+\]
+Taking square root on both sides gives the desired result.
+
+\subsection*{Step 12 to Step 16 are Handwritten}
 \end{solution}
 
 
