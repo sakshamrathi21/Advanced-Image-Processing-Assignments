@@ -26,7 +26,7 @@
 \fancyhf{}
 
 % Fancy header and footer
-\fancyhead[C]{\textbf{\color{blue!80}CS754 Assignment-1}}
+\fancyhead[C]{\textbf{\color{blue!80}CS754 Assignment-3}}
 % \fancyhead[R]{\color{blue!80}Saksham Rathi}
 \fancyfoot[C]{\thepage}
 
@@ -70,7 +70,48 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 4}
 
 \begin{solution}{Solution}
- 
+ The Radon Transform of a 2D image $f(x, y)$ at an angle $\theta$ is defined as:
+
+ \begin{equation}
+  \mathcal{R}_\theta f(\rho) = \int_{-\infty}^{\infty}f(x, y)\delta(\rho - (x cos\theta + y sin\theta)) dx dy
+  \label{eq1}
+ \end{equation}
+
+ Since, $g(x, y)$ is another 2D image which is a version of $f(x, y)$ shifted by $(x_0, y_0)$, we can write it as follows:
+
+ \[g(x, y) = f(x - x_0, y - y_0)\]
+
+ The Radon transform of $g(x, y)$ at an angle $\theta$ is:
+
+ \begin{equation}
+  \mathcal{R}_\theta g(\rho) = \int_{-\infty}^{\infty}g(x, y)\delta(\rho - (x cos\theta + y sin\theta)) dx dy 
+ \end{equation}
+
+ \begin{equation}
+  \mathcal{R}_\theta g(\rho)  = \int_{-\infty}^{\infty}f(x - x_0, y - y_0)\delta(\rho - (x cos\theta + y sin\theta)) dx dy
+ \end{equation}
+
+ Let $x' = x - x_0$ and $y' = y - y_0$ 
+
+ \begin{equation}
+  \mathcal{R}_\theta g(\rho)  = \int_{-\infty}^{\infty}f(x', y')\delta(\rho - ((x' + x_0) cos\theta + (y' + y_0) sin\theta)) dx dy
+ \end{equation}
+
+ \begin{equation}
+  \mathcal{R}_\theta g(\rho)  = \int_{-\infty}^{\infty}f(x', y')\delta((\rho - x_0 cos\theta - y_0 sin\theta)- (x' cos\theta + y' sin\theta)) dx dy
+ \end{equation}
+
+ One can easily notice the similarity of this equation with Eq:\ref{eq1} with a modified $\rho' =  (\rho - x_0 cos\theta - y_0 sin\theta)$.
+
+ Therefore, 
+ \begin{equation}
+  \mathcal{R}_\theta g(\rho)  = \mathcal{R}_\theta f(\rho') = \mathcal{R}_\theta f(\rho - x_0 cos\theta - y_0 sin\theta) = \mathcal{R}_\theta f(\rho - (x_0, y_0)\cdot(cos\theta, sin\theta))
+ \end{equation}
+
+
+
+
+
 
 \end{solution}
 
