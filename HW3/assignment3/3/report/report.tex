@@ -7,6 +7,7 @@
 \usepackage{titlesec}
 \usepackage{tikz}
 \usepackage{booktabs}
+\usepackage{subcaption}
 \usepackage{array}
 \usetikzlibrary{shadows}
 \usepackage{tcolorbox}
@@ -70,9 +71,87 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 3}
 
 \begin{solution}{Solution}
- 
+  Here is the original cryoem image:
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/cryoem.png}
+        \caption*{$Original Image$}
+    \end{subfigure}
+    \label{fig:orig}
+  \end{figure}
+
+  Here are the steps followed:
+
+  \begin{itemize}
+    \item Generate random angles in the range [0, 360). (Number of angles decided by $N$.)
+    \item Find the radon projections of the original image along these angles.
+    \item Build the similarity matrix (using cosine similarity).
+    \item Apply Laplacian eigenmaps to estimate projection angles.
+    \item Normalize the angles, so that they belong to the range [0, 360).
+    \item Reconstruct the image using inverse radon projections.
+    \item Find the optimal rotation (to minimize RRMSE) (the number of angles tried is made to depend on the number of projections, for higher resolution, with the minimum number of angles tried to be 360).
+  \end{itemize}
+
+  \clearpage
+
+  Here are the reconstructed images:
+
+
+
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N50.png}
+        \caption*{$N = 50$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N100.png}
+        \caption*{$N = 100$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N500.png}
+        \caption*{$N = 500$}
+    \end{subfigure}
+    \label{fig:recons1}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N500.png}
+        \caption*{$N = 500$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N1000.png}
+        \caption*{$N = 1000$}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N5000.png}
+        \caption*{$N = 5000$}
+    \end{subfigure}
+    \label{fig:recons2}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../images/reconstructed_N1000.png}
+        \caption*{$N = 10000$}
+    \end{subfigure}
+    \caption*{Reconstructed image for different values of $N$}
+    \label{fig:recons3}
+  \end{figure}
+
+  As we can see, the RRMSE (and RMSE) drops as N increases, which is expected, as we are getting data about more number of projections. Moreover, the image looks more similar to the original image. 
 
 \end{solution}
-
-
 \end{document}
