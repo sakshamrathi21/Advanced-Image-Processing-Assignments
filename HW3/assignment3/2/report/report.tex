@@ -71,14 +71,14 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \begin{solution}{Solution}
 
-  \section{Linear System Representation}
+  \subsection{Linear System Representation}
   The coded snapshot equation \( E = \sum_{t=1}^T \mathbf{C}_t \odot \mathbf{F}_t \) can be rewritten as the linear system:
   \[
   \mathbf{A} \mathbf{x} = \mathbf{b},
   \]
   where:
   \begin{enumerate}
-      \item \(\mathbf{x}\) is the **vectorized unknown video sequence**, formed by stacking the vectorized frames \(\mathbf{F}_t\):
+      \item \(\mathbf{x}\) is the \textbf{vectorized unknown video sequence}, formed by stacking the vectorized frames \(\mathbf{F}_t\):
       \[
       \mathbf{x} = \begin{bmatrix}
       \text{vec}(\mathbf{F}_1) \\
@@ -88,12 +88,12 @@ we have adhered to the principles of academic honesty while completing and submi
       \end{bmatrix} \in \mathbb{R}^{HWT \times 1}.
       \]
       
-      \item \(\mathbf{b}\) is the **vectorized coded snapshot**:
+      \item \(\mathbf{b}\) is the \textbf{vectorized coded snapshot}:
       \[
       \mathbf{b} = \text{vec}(E) \in \mathbb{R}^{HW \times 1}.
       \]
       
-      \item \(\mathbf{A}\) is the **measurement matrix** encoding the modulation by \(\mathbf{C}_t\). It is a block-diagonal matrix with horizontally concatenated diagonal matrices:
+      \item \(\mathbf{A}\) is the \textbf{measurement matrix} encoding the modulation by \(\mathbf{C}_t\). It is a block-diagonal matrix with horizontally concatenated diagonal matrices:
       \[
       \mathbf{A} = \begin{bmatrix}
       \text{diag}(\text{vec}(\mathbf{C}_1)) & \text{diag}(\text{vec}(\mathbf{C}_2)) & \cdots & \text{diag}(\text{vec}(\mathbf{C}_T))
@@ -175,12 +175,12 @@ we have adhered to the principles of academic honesty while completing and submi
   \label{fig:output}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames_flame.png}
-  \caption{Reconstructed Frames for T = 5 : Flame Video}
-  \label{fig:output}
-\end{figure}
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames_flame.png}
+%   \caption{Reconstructed Frames for T = 5 : Flame Video}
+%   \label{fig:output}
+% \end{figure}
 
 
 
