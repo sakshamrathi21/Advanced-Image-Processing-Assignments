@@ -70,7 +70,53 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 5}
 
 \begin{solution}{Solution}
- 
+
+\noindent Given : $Q_1$ and $Q_2$ are observed particle images obtained by translating a zero shift particle image $P_1$ by $\left( \delta_{x_1}, \delta_{y_1}\right)$ and $\left( \delta_{x_2}, \delta_{y_2}\right)$ respectively. The common line for the particle images pass through the origins of the respective coordinate systems at angles $\theta_1$ and $\theta_2$ respectively. 
+
+\subsection{Relationship between Observations and Shift Variables}
+
+\noindent In the coordinate system of $P_1$, the unit vector in the direction of the image is $\left( \cos \theta_1, \sin \theta_1 \right)$. The shift can be projected onto this unit vector to get the shift components in the direction of the image. The shift components in the direction of the image are given by:
+\begin{align*}
+    \delta_{s_1} &= \delta_{x_1} \cos \theta_1 + \delta_{y_1} \sin \theta_1
+\end{align*}
+
+\noindent Similarly, in the coordinate system of $P_2$, the unit vector in the direction of the image is $\left( \cos \theta_2, \sin \theta_2 \right)$. The shift components in the direction of the image are given by:
+\begin{align*}
+    \delta_{s_2} &= \delta_{x_2} \cos \theta_2 + \delta_{y_2} \sin \theta_2
+\end{align*}
+
+\noindent We can observe the following variables:
+\begin{enumerate}
+  \item Relative Orientation between the two images: $\theta_2 - \theta_1$
+  \item Relative Shift between the two images: $|\delta_{s_2} - \delta_{s_1}|$
+\end{enumerate}
+
+\noindent From the above observations, we can define the equation that relates the unknown shift variables $\delta_{x_1}, \delta_{y_1}, \delta_{x_2}, \delta_{y_2}$ to the observed variables $\theta_1, \theta_2, \delta_{s_1}, \delta_{s_2}$.
+
+\begin{align*}
+    \delta_{x_1} \cos \theta_1 + \delta_{y_1} \sin \theta_1  - \delta_{x_2} \cos \theta_2 - \delta_{y_2} \sin \theta_2 = |\delta_{s_2} - \delta_{s_1}|\cdot \cos(\theta_2 - \theta_1)
+\end{align*}
+
+\subsection{Solving for the Shift Variables}
+
+\noindent To solve for the shifts, we need additional observations to furthur constrain the system. We can obtain additional observations as :
+
+\begin{enumerate}
+  \item If there are identifiable features in the images, we can use their relative positions to obtain additional constraints.
+  \item Angles between such features in $Q_1$ and $Q_2$ can be used to resolve the ambiguity in the shift variables.
+\end{enumerate}
+
+\noindent By using multiple equations of the form derived in the previous section, we can solve for the shift variables $\delta_{x_1}, \delta_{y_1}, \delta_{x_2}, \delta_{y_2}$.
+
+\subsection{Extension into N Projection Planes}
+
+\noindent The above method can be extended to $N$ projection planes. The shift variables can be solved by using the following equation for each pair of projection planes $i$ and $j$:
+
+\begin{align*}
+    \delta_{x_i} \cos \theta_i + \delta_{y_i} \sin \theta_i  - \delta_{x_j} \cos \theta_j - \delta_{y_j} \sin \theta_j = |\delta_{s_j} - \delta_{s_i}|\cdot \cos(\theta_j - \theta_i)
+\end{align*}
+
+\noindent Thus, we get a total of $\binom{N}{2}$ equations to solve for the $2N$ shift variables. This creates a linear system of equations which can be solved to obtain the shift variables.
 
 \end{solution}
 
