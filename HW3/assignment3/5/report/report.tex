@@ -71,52 +71,108 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \begin{solution}{Solution}
 
-\noindent Given : $Q_1$ and $Q_2$ are observed particle images obtained by translating a zero shift particle image $P_1$ by $\left( \delta_{x_1}, \delta_{y_1}\right)$ and $\left( \delta_{x_2}, \delta_{y_2}\right)$ respectively. The common line for the particle images pass through the origins of the respective coordinate systems at angles $\theta_1$ and $\theta_2$ respectively. 
+\section{Relationship Between Shifted Particle Images}
 
-\subsection{Relationship between Observations and Shift Variables}
+Consider two observed particle images Q1 and Q2 corresponding to a 3D density map, each in different 3D orientations and 2D shifts. Let Q1 be obtained by translating a zero-shift particle image P1 by $(\delta x_1, \delta y_1)$. Let Q2 be obtained by translating a zero-shift particle image P2 by $(\delta x_2, \delta y_2)$. The common line for the particle images P1, P2 passes through the origins of their respective coordinate systems at angles $\theta_1$ and $\theta_2$ with respect to their respective X axes.
 
-\noindent In the coordinate system of $P_1$, the unit vector in the direction of the image is $\left( \cos \theta_1, \sin \theta_1 \right)$. The shift can be projected onto this unit vector to get the shift components in the direction of the image. The shift components in the direction of the image are given by:
-\begin{align*}
-    \delta_{s_1} &= \delta_{x_1} \cos \theta_1 + \delta_{y_1} \sin \theta_1
-\end{align*}
-
-\noindent Similarly, in the coordinate system of $P_2$, the unit vector in the direction of the image is $\left( \cos \theta_2, \sin \theta_2 \right)$. The shift components in the direction of the image are given by:
-\begin{align*}
-    \delta_{s_2} &= \delta_{x_2} \cos \theta_2 + \delta_{y_2} \sin \theta_2
-\end{align*}
-
-\noindent We can observe the following variables:
+\subsection{Mathematical Derivation}
 \begin{enumerate}
-  \item Relative Orientation between the two images: $\theta_2 - \theta_1$
-  \item Relative Shift between the two images: $|\delta_{s_2} - \delta_{s_1}|$
+
+\item In real space, the relationship between the shifted and unshifted images is:
+
+   \begin{align}
+   Q_1(x,y) &= P_1(x-\delta x_1, y-\delta y_1) \\
+   Q_2(x,y) &= P_2(x-\delta x_2, y-\delta y_2)
+   \end{align}
+
+\item We can take the Fourier Transform of the System to obtain:
+
+   \begin{align}
+   \mathcal{F}[Q_1](s,t) &= e^{-2\pi i(s\delta x_1 + t\delta y_1)} \cdot \mathcal{F}[P_1](s,t) \\
+   \mathcal{F}[Q_2](s,t) &= e^{-2\pi i(s\delta x_2 + t\delta y_2)} \cdot \mathcal{F}[P_2](s,t)
+   \end{align}
+
+\item Along the common line, the Fourier space coordinates can be written as:
+
+   \begin{align}
+   \text{For Q1:} \quad (s,t) &= (r\cos\theta_1, r\sin\theta_1) \\
+   \text{For Q2:} \quad (s,t) &= (r\cos\theta_2, r\sin\theta_2)
+   \end{align}
+
+   where $r$ is the distance from the origin in Fourier space.
+
+\item The Fourier slice theorem implies that along this common line:
+
+   \begin{equation}
+   \mathcal{F}[P_1](r\cos\theta_1, r\sin\theta_1) = \mathcal{F}[P_2](r\cos\theta_2, r\sin\theta_2)
+   \end{equation}
+
+\item Therefore, we can write:
+
+   \begin{equation}
+   \frac{\mathcal{F}[Q_1](r\cos\theta_1, r\sin\theta_1)}{\mathcal{F}[Q_2](r\cos\theta_2, r\sin\theta_2)} = \frac{e^{-2\pi i(r\cos\theta_1\delta x_1 + r\sin\theta_1\delta y_1)}}{e^{-2\pi i(r\cos\theta_2\delta x_2 + r\sin\theta_2\delta y_2)}}
+   \end{equation}
+
+\item Simplifying:
+
+   \begin{equation}
+   \frac{\mathcal{F}[Q_1](r\cos\theta_1, r\sin\theta_1)}{\mathcal{F}[Q_2](r\cos\theta_2, r\sin\theta_2)} = e^{-2\pi i r[(\delta x_1\cos\theta_1 + \delta y_1\sin\theta_1) - (\delta x_2\cos\theta_2 + \delta y_2\sin\theta_2)]}
+   \end{equation}
+
+\item The phase difference between corresponding points on the common line is:
+
+   \begin{equation}
+   \Delta\phi(r) = -2\pi r[(\delta x_1\cos\theta_1 + \delta y_1\sin\theta_1) - (\delta x_2\cos\theta_2 + \delta y_2\sin\theta_2)]
+   \end{equation}
+
+\item This is a linear function of $r$ with slope:
+
+   \begin{equation}
+   m = -2\pi[(\delta x_1\cos\theta_1 + \delta y_1\sin\theta_1) - (\delta x_2\cos\theta_2 + \delta y_2\sin\theta_2)]
+   \end{equation}
+
 \end{enumerate}
 
-\noindent From the above observations, we can define the equation that relates the unknown shift variables $\delta_{x_1}, \delta_{y_1}, \delta_{x_2}, \delta_{y_2}$ to the observed variables $\theta_1, \theta_2, \delta_{s_1}, \delta_{s_2}$.
 
-\begin{align*}
-    \delta_{x_1} \cos \theta_1 + \delta_{y_1} \sin \theta_1  - \delta_{x_2} \cos \theta_2 - \delta_{y_2} \sin \theta_2 = |\delta_{s_2} - \delta_{s_1}|\cdot \cos(\theta_2 - \theta_1)
-\end{align*}
+\subsection{Determining Shifts}
 
-\subsection{Solving for the Shift Variables}
-
-\noindent To solve for the shifts, we need additional observations to furthur constrain the system. We can obtain additional observations as :
-
+To determine $\delta x_1, \delta y_1, \delta x_2, \delta y_2$:
 \begin{enumerate}
-  \item If there are identifiable features in the images, we can use their relative positions to obtain additional constraints.
-  \item Angles between such features in $Q_1$ and $Q_2$ can be used to add constraints in the shift variables.
+\item Identify the common line and determine $\theta_1$ and $\theta_2$.
+\item Compute the Fourier transforms of Q1 and Q2.
+\item Calculate the phase difference $\Delta\phi(r)$ along the common line.
+\item Measure the slope $m$ of this phase difference.
 \end{enumerate}
 
-\noindent By using multiple equations of the form derived in the previous section, we can solve for the shift variables $\delta_{x_1}, \delta_{y_1}, \delta_{x_2}, \delta_{y_2}$.
+\noindent This gives one equation with four unknowns. To solve:
+\begin{enumerate}
+\item Set one image (e.g., Q1) as reference: $(\delta x_1, \delta y_1) = (0, 0)$
+\item Use multiple common lines between pairs of images for additional equations
+\end{enumerate}
 
-\subsection{Extension into N Projection Planes}
 
-\noindent The above method can be extended to $N$ projection planes. The shift variables can be solved by using the following equation for each pair of projection planes $i$ and $j$:
+\subsection{Extension to N Images}
 
-\begin{align*}
-    \delta_{x_i} \cos \theta_i + \delta_{y_i} \sin \theta_i  - \delta_{x_j} \cos \theta_j - \delta_{y_j} \sin \theta_j = |\delta_{s_j} - \delta_{s_i}|\cdot \cos(\theta_j - \theta_i)
-\end{align*}
+For N images, we have 2N unknowns $(\delta x_i, \delta y_i)$ for $i = 1$ to $N$.
+\begin{enumerate}
+\item For each pair of images (i,j), identify their common line and angles $\theta_i$ and $\theta_j$.
+\item Compute the phase difference slope along each common line.
+\item Set up a system of equations. For each pair (i,j):
 
-\noindent Thus, we get a total of $\binom{N}{2}$ equations to solve for the $2N$ shift variables. This creates a linear system of equations which can be solved to obtain the shift variables.
+   \begin{equation}
+   m_{ij} = -2\pi[(\delta x_i\cos\theta_i + \delta y_i\sin\theta_i) - (\delta x_j\cos\theta_j + \delta y_j\sin\theta_j)]
+   \end{equation}
+
+\item We can form up to $\binom{N}{2}$ equations from all possible image pairs.
+\item Solve the system using least squares optimization when we have more equations than unknowns (typically when $N > 4$).
+\end{enumerate}
+\subsection{Number of Knowns and Unknowns}
+
+\begin{enumerate}
+\item Unknowns: 2N (the shifts $\delta x_i, \delta y_i$ for $i = 1$ to $N$)
+\item Knowns: Up to $\binom{N}{2}$ equations from common line pairs
+\item Additional constraint: Can set one image as reference, reducing unknowns to $2(N-1)$
+\end{enumerate}
 
 \end{solution}
 
