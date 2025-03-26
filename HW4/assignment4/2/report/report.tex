@@ -69,7 +69,12 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \section*{Question 2}
 
-\begin{solution}{Solution}
+\begin{solution}{Part (a)}
+We are sampling from a set of $n$ coupons, with replacement.
+
+So far, from the previous $j - 1$ trials, we have been getting unique coupons. So, now we have $n - j + 1$  coupons left, out of which we can select any one for uniqueness. Total varieties of coupons = $n$. So, the probability of picking up a unique coupon is: $\frac{n-j+1}{n}$. (For $j > n$, this probability is 0, because of pigeon-hole principle.) 
+
+$q_1 = \frac{n - 1 + 1}{n} = 1$ (This also follows from the fact that the first coupon will be always unique.)
 
 \end{solution}
 
