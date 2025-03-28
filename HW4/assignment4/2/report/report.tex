@@ -79,6 +79,83 @@ $q_1 = \frac{n - 1 + 1}{n} = 1$ (This also follows from the fact that the first 
 \end{solution}
 
 
+\begin{solution}{Part (b)}
+  We get our first head in the $k^{th}$ trial, so we get tail in the initial $k - 1$ trials. the probability of getting a head is $q$, so that of a tail is $1-q$. Since, each trial is independent of the previous trials, the overall probability is:
+
+  $P = (1-q)^{k-1}q$
+
+  (where we have also considered the probability of getting a head in the $k^{th}$ trial.)
+\end{solution}
+
+
+\begin{solution}{Part (c)}
+  The probability that $Y = k$ has been calculated in the previous part:
+
+  $P(Y = k) = (1-q)^{k-1}q$
+
+  To find the expectation of the random variable $Y$, we need to calculate the following sum:
+
+  $1\times P(Y = 1) + 2\times P(Y = 2) + \dots$
+
+  That is, the trial number multiplied my the probability corresponding to that trial.
+
+
+  Writing the above expression in the summation form, we get:
+
+  \[\mathbb{E}(Y) = \sum_{k=1}^{\infty}k(1-q)^{k-1}q\]
+
+  Let us call this expression as $S$, then:
+
+  \[S\times(1-q) = \sum_{k=1}^{\infty}k(1-q)^{k}q\]
+
+  Subtracting the lower expression from the one above, we get:
+
+  \[S - S(1-q) = (q + 2(1-q)q + 3(1-q)^2q + \dots) - ((1-q)q + 2(1-q)^2q + \dots)\]
+
+  We will combine the terms with common powers of $(1-q)$, so we get:
+
+  \[S\times q = q + q(1-q) + q(1-q)^2 + \dots + \infty\]
+
+  We can use infinite GP expression:
+
+  \[S(q) = \frac{q}{1-(1-q)}\]
+
+  So, we get $\mathbb{E}(Y) = \frac{1}{q}$.
+\end{solution}
+
+\begin{solution}{Part (d)}
+  We need to find the variance of $Y$, which can be written as:
+
+  \[Var(Y) = E(Y^2) - (E(Y))^2\]
+
+  The rightmost term, has already been calculated in the previous part. So, let us calculate $E(Y^2)$:
+  \[\mathbb{E}(Y^2) = \sum_{k=1}^{\infty}k^2(1-q)^{k-1}q\]
+
+  Let us calculate the following expression:
+
+  \[\mathbb{E}(Y^2) - 2\mathbb{E}(Y^2)(1-q) + \mathbb{E}(Y^2)(1-q)^2 \]
+  \[= \sum_{k=1}^{\infty}k^2(1-q)^{k-1}q - 2\sum_{k=1}^{\infty}k^2(1-q)^{k}q + \sum_{k=1}^{\infty}k^2(1-q)^{k+1}q = \mathbb{E}(Y^2)(1-(1-q))^2 = \mathbb{E}(Y^2)(q^2)\]
+
+  Once again, we compbine terms with common powers of $1-q$.  So, we get:
+
+  \[\mathbb{E}(Y^2)(q^2) = q + 2^2(1-q)q -  2(1-q)q  + q\sum_{k=1}^{\infty}(1-q)^{k+1}((k+2)^2 - 2(k+1)^2 + k^2)\]
+
+  \[\mathbb{E}(Y^2)(q^2) = q + 2(1-q)q + 2q\sum_{k=1}^{\infty}(1-q)^{k+1}\]
+  \[\mathbb{E}(Y^2)(q^2) = q + 2(1-q)q + 2q\frac{(1-q)^2}{1-(1-q)} = q + 2q - 2q^2 + 2-2q + 2q^2\]
+  So, we get:
+  \[\mathbb{E}(Y^2) = \frac{2-q}{q^2}\]
+
+  From this, we get the variance as:
+
+  \[Var(Y) = \frac{2-q}{q^2} - (\frac{1}{q})^2 = \frac{1-q}{q^2}\]
+  
+\end{solution}
+
+\begin{solution}{Part (e)}
+  
+\end{solution}
+
+
 
 
 \end{document}
