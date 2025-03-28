@@ -152,8 +152,57 @@ $q_1 = \frac{n - 1 + 1}{n} = 1$ (This also follows from the fact that the first 
 \end{solution}
 
 \begin{solution}{Part (e)}
-  
+$Z_n$ be the random variable denoting the number of trials by which each of the n different coupons were selected at least once. Let $t_i$ be the time to collect the $i^{th}$ coupon after $i - 1$ coupons have been collected. Then, $Z_n = t_1 + \dots + t_n$ (we are just summing over the waiting times over every unique coupon obtained).
+
+From part(a), we have that the probability $q_j$ of getting a new coupon on the $j^{th}$ trial is $\frac{n-j+1}{n}$. If we do not get a new coupon, then the probability would remain the same for the next trial (as these many coupons are left to be turned up). So, this is essentially same as tossing a coin and waiting for a head, where head has probability $q_j$. So, basically $t_j$ is the event $Y$, which we have used in the previous parts, with probability $q_j$. Expectation is linear so:
+
+\[\mathbb{E}[Z_n] = \sum_{i=1}^{n}\mathbb{E}[t_i] = \sum_{i=1}^{n}\frac{1}{q_i} = \frac{n}{n-i+1} = n\left(\frac{1}{n} + \dots + \frac{n}{n}\right)\]
+
+We can use the inequalities mentioned in the question statement:
+
+\[\mathbb{E}[Z_n] = n\left(logn + \gamma + \mathbb{O}(\frac{1}{n})\right)\]
+
+
+Again, we know that $t_j$ random variables are independent from each other (each trial itself is independent), so we can get the following expression of variance:
+
+\[Var(Z_n) = \sum_{i=1}^{n}Var(t_i) = \sum_{i=1}^{n}\frac{1-q_i}{q_i^2} = \sum_{i=1}^{n}\frac{1}{q_i^2} - \frac{1}{q_i} \leq \sum_{i=1}^{n}\frac{1}{q_i^2} = \sum_{i=1}^{n}\frac{n^2}{(n - i + 1)^2}\]
+
+\[Var(Z_n) \leq n^2\sum_{i=1}^{n}\frac{1}{i^2}\]
+We can again use one of the inequalities mentioned in the question:
+\[Var(Z_n) \leq n^2\sum_{i=1}^{\infty}\frac{1}{i^2} \leq \frac{n^2\pi^2}{6}\]
+
+Thus, we have got an upper bound on the variance of $Z_n$. (If we want an even stronger bound, then we can use the expectation approximation in the variance calculation.)
 \end{solution}
+
+\begin{solution}{Part (f)}
+  Markov inequality states that:
+
+  \[\mathbb{P}(Z_n \geq t) \leq \frac{\mathbb{E}(Z_n)}{t}\]
+
+  We can use the expectation approximation calculated in the previous part, and get the following:
+  \[\mathbb{P}(Z_n \geq t) \leq \frac{n\left(logn + \gamma + \mathbb{O}(\frac{1}{n})\right)}{t}\]
+
+  Thus we have found an upper bound using Markov's inequality.
+\end{solution}
+
+
+\begin{solution}{Part (g)}
+  Since, we do not have a mod operator, we need to use one-sided Chebyshev inequality (also famously known as Cantelli's inequality), which states that ($\sigma$ is the variance of the random variable):
+  \[\mathbb{P}(X - \mathbb{E}(X) \geq \lambda) \leq \frac{\sigma^2}{\sigma^2 + \lambda^2}\]
+
+ Making the expression compatible to our case, we want:
+ \[\mathbb{P}\left(Z_n \geq (t - \mathbb{E}(Z_n)) + \mathbb{E}(Z_n)\right)\]
+ Putting the $\lambda$ expression so obtained in the right hand side, we get
+ \[\frac{\sigma^2}{\sigma^2 + \lambda^2} = \frac{1}{1 + \frac{\lambda^2}{\sigma^2}}\]
+
+ Now, we also know that $\sigma^2 = Var(Z_n) \leq \frac{n^2\pi^2}{6}$ from one of the previous parts. Therefore:
+\[\mathbb{P}\left(Z_n \geq t \right) \leq \frac{1}{1 + \frac{(t - \mathbb{E}(Z_n))^2}{\frac{n^2\pi^2}{6}}}\]
+
+
+We can put the expectation expression in this, and simplify it further. We could have used double sided Chebyshev inequality too, however the bound would have been loose in that case.
+
+\end{solution}
+
 
 
 
