@@ -71,117 +71,162 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \begin{solution}{Solution}
 
-  \subsection{Linear System Representation}
-  The coded snapshot equation \( E = \sum_{t=1}^T \mathbf{C}_t \odot \mathbf{F}_t \) can be rewritten as the linear system:
-  \[
-  \mathbf{A} \mathbf{x} = \mathbf{b},
-  \]
-  where:
-  \begin{enumerate}
-      \item \(\mathbf{x}\) is the \textbf{vectorized unknown video sequence}, formed by stacking the vectorized frames \(\mathbf{F}_t\):
-      \[
-      \mathbf{x} = \begin{bmatrix}
-      \text{vec}(\mathbf{F}_1) \\
-      \text{vec}(\mathbf{F}_2) \\
-      \vdots \\
-      \text{vec}(\mathbf{F}_T)
-      \end{bmatrix} \in \mathbb{R}^{HWT \times 1}.
-      \]
-      
-      \item \(\mathbf{b}\) is the \textbf{vectorized coded snapshot}:
-      \[
-      \mathbf{b} = \text{vec}(E) \in \mathbb{R}^{HW \times 1}.
-      \]
-      
-      \item \(\mathbf{A}\) is the \textbf{measurement matrix} encoding the modulation by \(\mathbf{C}_t\). It is a block-diagonal matrix with horizontally concatenated diagonal matrices:
-      \[
-      \mathbf{A} = \begin{bmatrix}
-      \text{diag}(\text{vec}(\mathbf{C}_1)) & \text{diag}(\text{vec}(\mathbf{C}_2)) & \cdots & \text{diag}(\text{vec}(\mathbf{C}_T))
-      \end{bmatrix} \in \mathbb{R}^{HW \times HWT}.
-      \]
-      Each block \(\text{diag}(\text{vec}(\mathbf{C}_t))\) is a diagonal matrix whose entries are the vectorized binary code \(\mathbf{C}_t\) for frame \(t\).
-  \end{enumerate}
+\section{Methodology}
+
+\subsection{Problem Formulation}
+The coded snapshot $E_u$ is obtained as:
+\[
+E_u = \sum_{t=1}^{T} C_t \odot F_t + \eta
+\]
+where:
+\begin{enumerate}
+    \item $C_t$ is a binary code modulating frame $F_t$,
+    \item $\eta$ is additive Gaussian noise with $\sigma = 2$.
+\end{enumerate}
+
+\textbf{Objective:} Given $E_u$ and $\{C_t\}_{t=1}^T$, recover $\{F_t\}_{t=1}^T$.
+
+\subsection{Linear System Representation}
+The problem is reformulated as $\mathbf{Ax} = \mathbf{b}$, where:
+\begin{enumerate}
+    \item $\mathbf{x}$: Vectorized form of all frames $\{F_t\}$,
+    \item $\mathbf{b}$: Vectorized coded snapshot $E_u$,
+    \item $\mathbf{A}$: Block-row matrix where each block is $\text{diag}(\text{vec}(C_t))$.
+    \begin{align}
+        A = [diag(C_1) \hspace{5pt} diag(C_2) \cdots diag(C_T)]
+    \end{align}
+\end{enumerate}
+
+\noindent For \textbf{patch-wise processing} (8$\times$8 patches):
+\begin{enumerate}
+    \item $\mathbf{x}$: Sparse coefficients of patches in 2D-DCT basis,
+    \item $\mathbf{A}$: Constructed as:
+    \[
+    \mathbf{A} = \begin{bmatrix}
+    \text{diag}(\text{vec}(C_1)) \mathbf{\Psi} & \cdots & \text{diag}(\text{vec}(C_T)) \mathbf{\Psi}
+    \end{bmatrix}
+    \]
+    where $\mathbf{\Psi}$ is the 2D-DCT basis.
+    \item $\mathbf{b}$: Vectorised patch vector
+\end{enumerate}
+
+\subsection{Reconstruction via OMP}
+\begin{enumerate}
+    \item \textbf{Patch Extraction:}
+    \begin{enumerate}
+        \item Divide $E_u$ into overlapping 8$\times$8 patches.
+        \item For each patch, solve:
+        \[
+        \mathbf{A}_{\text{patch}} \mathbf{x}_{\text{patch}} = \mathbf{b}_{\text{patch}}
+        \]
+        using OMP (sparsity constraint: $k = 10$).
+    \end{enumerate}
+    
+    \item \textbf{Sparse Recovery:}
+    \begin{enumerate}
+        \item OMP iteratively selects the most correlated basis vectors and solves a least-squares problem.
+    \end{enumerate}
+    
+    \item \textbf{Frame Reconstruction:}
+    \begin{enumerate}
+        \item Reconstruct each patch via $\mathbf{\Psi x}$.
+        \item Average overlapping regions to suppress artifacts.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Results}
+
+\noindent To quantify the quality of the reconstruction we computed the RRMSE (Normalised Root Mean Squared Error). A trend that was observed was that the the RRMSE for frames increases on increasing the values of T. This can be explained by the fact that the total information available to us in the long exposure frame remains that same but we are inferring more number of frames from that leading to an increase in the error and decrease in reconstruction quality. 
 
 \end{solution}
 
+\begin{table}[htbp]
+  \centering
+  \label{tab:rmse}
+  \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Image Identification} & \textbf{RMSE} \\
+    \hline
+    Cars T = 3 & 0.7915 \\
+    Cars T = 5 & 0.8056 \\
+    Cars T = 7 & 0.8107 \\
+    Flame T = 5 & 1.1015 \\
+    \hline
+  \end{tabular}
+  \caption{Mean RMSE Values for Frame Reconstruction}
+\end{table}
+
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{../images/original_frames.png}
+    \includegraphics[width=0.4\linewidth]{originalFrames.png}
     \caption{Original Frames for T = 3}
-
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{../images/noisy_coded_snapshot.png}
-    \caption{Encoded Snapshot for T = 3}
-
+    \includegraphics[width=0.4\linewidth]{noisy_coded_snapshot.png}
+    \caption{Noisy coded snapshot for T = 3}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames.png}
+    \includegraphics[width=0.4\linewidth]{reconstructed_frames.png}
     \caption{Reconstructed Frames for T = 3}
-
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/original_frames_5.png}
-  \caption{Original Frames for T = 5}
+    \centering
+    \includegraphics[width=0.4\linewidth]{original_frames_5.png}
+    \caption{Original Frames for T = 5}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/noisy_coded_snapshot_5.png}
-  \caption{Encoded Snapshot for T = 5}
+    \centering
+    \includegraphics[width=0.4\linewidth]{noisy_coded_snapshot_5.png}
+    \caption{Noisy coded snapshot for T = 5}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames_5.png}
-  \caption{Reconstructed Frames for T = 5}
+    \centering
+    \includegraphics[width=0.4\linewidth]{reconstructed_frames_5.png}
+    \caption{Reconstructed Frames for T = 5}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/original_frames_7.png}
-  \caption{Original Frames for T = 7}
+    \centering
+    \includegraphics[width=0.4\linewidth]{original_frames_7.png}
+    \caption{Original Frames for T = 7}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/noisy_coded_snapshot_7.png}
-  \caption{Encoded Snapshot for T = 7}
+    \centering
+    \includegraphics[width=0.4\linewidth]{noisy_coded_snapshot_7.png}
+    \caption{Noisy coded snapshot for T = 7}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames_7.png}
-  \caption{Reconstructed Frames for T = 7}
+    \centering
+    \includegraphics[width=0.4\linewidth]{reconstructed_frames_7.png}
+    \caption{Reconstructed Frames for T = 7}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.4\linewidth]{original_frames_flame.png}
+    \caption{Original Frames for Flame Video}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/original_frames_flame.png}
-  \caption{Original Frames for T = 5 : Flame Video}
-  \label{fig:output}
+    \centering
+    \includegraphics[width=0.4\linewidth]{noisy_coded_snapshot_flame.png}
+    \caption{Noisy coded snapshot for Flames Video}
 \end{figure}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{../images/noisy_coded_snapshot_flame.png}
-  \caption{Encoded Snapshot for T = 5 : Flame Video}
-  \label{fig:output}
+    \centering
+    \includegraphics[width=0.4\linewidth]{reconstructed_frames_flames.png}
+    \caption{Reconstructed Frames for Flames Video}
 \end{figure}
-
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.8\textwidth]{../images/reconstructed_frames_flame.png}
-%   \caption{Reconstructed Frames for T = 5 : Flame Video}
-%   \label{fig:output}
-% \end{figure}
-
-
 
 \end{document}

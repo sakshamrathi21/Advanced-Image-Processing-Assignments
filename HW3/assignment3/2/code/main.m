@@ -1,6 +1,6 @@
 clc, clear, close all;
 
-imageFolderPath = 'C:\Users\Kshitij Vaidya\Documents\CS754-Assignments\HW3\assignment3\2\images\';
+imageFolderPath = '..\images\';
 path = 'cars.avi';
 A = mmread(path);
 T = 3;
