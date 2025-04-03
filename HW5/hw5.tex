@@ -1,0 +1,80 @@
+\title{Assignment 4: CS 754, Advanced Image Processing}
+\author{}
+\date{Due: 16th April before 11:55 pm}
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb,color,xcolor}
+\usepackage{hyperref}
+\usepackage{ulem}
+\usepackage[margin=0.5in]{geometry}
+\begin{document}
+\maketitle
+
+\textbf{Remember the honor code while submitting this (and every other) assignment. All members of the group should work on and \emph{understand} all parts of the assignment. We will adopt a \textbf{zero-tolerance policy} against any violation.}
+\\
+\\
+\noindent\textbf{Submission instructions:} You should ideally type out all the answers in Word (with the equation editor) or using Latex. In either case, prepare a pdf file. Create a single zip or rar file containing the report, code and sample outputs and name it as follows: A5-IdNumberOfFirstStudent-IdNumberOfSecondStudent.zip. (If you are doing the assignment alone, the name of the zip file is A5-IdNumber.zip). Upload the file on moodle BEFORE 11:55 pm on the due date. The cutoff is 10 am on 17th April after which no assignments will be accepted. Note that only one student per group should upload their work on moodle. Please preserve a copy of all your work until the end of the semester. \emph{If you have difficulties, please do not hesitate to seek help from me.} 
+
+\noindent\textbf{Instructions for Coding Questions}
+\begin{enumerate}
+  \item Make a subfolder in the submission folder. Name the folder `media'.
+  \item The directory structure should look like :
+  \begin{verbatim}
+    A5-<Roll_No_1>-<Roll_No_2>-<Roll_No_3>
+        |	
+        |________media
+        |________<other_file_1>
+        |________<other_file_2>
+        |________------------
+        |________------------
+        |________<other_file_n>
+        
+  \end{verbatim}
+  
+  \item Read ANY image/video	in ANY code from this folder(media) itself.
+  
+  \item ALL the images/videos required for ANY code should be present in the folder 'media' itself, if your  final compressed submission folder size DOES NOT EXCEED THE MOODLE SIZE LIMIT.
+  
+  \item The TAs will copy all the images/video to the folder 'media' at the time of evaluation, if your final compressed submission folder DOES EXCEED THE MOODLE SIZE LIMIT. In this case leave the 'media' folder blank.
+  
+  \item Please ensure that all the codes run at the click of a single go (RUN button) in MATLAB.
+  
+  \item Please ensure that all the asked result images/videos, plots and graphs pop up at the click of a single go (RUN button) in MATLAB, while running the corresponding code for any question.
+  
+  \item The result images/videos, plots and graphs should match those present in the report.
+
+\end{enumerate}
+
+\newpage
+\noindent\textbf{Questions}
+\begin{enumerate}
+\item Implement the ALM algorithm for robust PCA. For this, create a matrix $\boldsymbol{M} \in \mathbb{R}^{n_1 \times n_2}$ which is the sum of a low rank matrix $\boldsymbol{L}$ of rank $r$ and a sparse matrix $\boldsymbol{S}$ with $s = f_s n_1 n_2$ non-zero elements where $f_s \in [0,1]$. Create $\boldsymbol{L}$ using truncated SVD of Gaussian random matrices. The non-zero entries of $\boldsymbol{S}$ should be drawn from $\mathcal{N}(0,9)$ and they should exist at randomly chosen indices. For this experiment, let $n_1 = 800, n_2 = 900$. Vary $r \in \{10,30,50,75,100,125,150,200\}$ and $f_s \in \{0.01, 0.02, 0.03, 0.04, 0.06, 0.08, 0.1, 0.15\}$. Each value of $(r,f_s)$, execute the algorithm 15 times and record the success probability. Plot the success probability as an image whose X and Y axes are $r$ and $f_s$ respectively (lower probability in darker color and higher probability in brighter color). Plot a colorbar using the \texttt{colorbar} function in MATLAB. Note that we define a reconstruction to be successful if $\|\boldsymbol{L}-\boldsymbol{\hat{L}}\|_F/\|\boldsymbol{L}\|_F \leq 0.001$ and $\|\boldsymbol{S}-\boldsymbol{\hat{S}}\|_F/\|\boldsymbol{S}\|_F \leq 0.001$ where $\boldsymbol{\hat{L}}, \boldsymbol{\hat{S}}$ are estimates of $\boldsymbol{L}, \boldsymbol{S}$ respectively. (Note, typically a single run of RPCA took just about 1.5-2 seconds on my desktop.) For any one successful and one unsuccessful $(r,f_s)$ configuration, plot the ground truth and estimated low-rank and sparse matrices as separate grayscale images. Note that
+for RPCA, we are minimizing $\|\boldsymbol{L}\|_{*} + \lambda \|\boldsymbol{S}\|_1$ subject to $\boldsymbol{M} = \boldsymbol{L} + \boldsymbol{S}$ where $\lambda = 1/\sqrt{\text{max}(n_1,n_2)}$.
+\textsf{[30 points]}
+
+\item Read the wiki article on L1-norm PCA: \url{https://en.wikipedia.org/wiki/L1-norm_principal_component_analysis}. List any three fundamental ways in which robust PCA that we did in class differs from L1-norm PCA. \textsf{[15 points]}
+
+\item Perform a google search on any one advancement in the theory of RPCA. Choose any one paper, and explain how it advances the theory of RPCA. For this, write the statement of one key theorem from that paper and explain how it advances over the RPCA theory done in class. Mention the application where the theory is valid. \textsf{[15 points]}
+
+\item Consider that you learned a dictionary $\boldsymbol{D}$ to sparsely represent a certain class $\mathcal{S}$ of images - say handwritten alphabet or digit images. How will you convert $\boldsymbol{D}$ to another dictionary which will sparsely represent the following classes of images? Note that you are not allowed to learn the dictionary all over again, as it is time-consuming. 
+\begin{enumerate}
+\item Class $\mathcal{S}_1$ which consists of images obtained by applying a known affine transform $\boldsymbol{A_1}$ to a subset of the images in class $\mathcal{S}$, and by applying another known affine transform $\boldsymbol{A_2}$ to the other subset. Assume that the images in $\mathcal{S}$ consisted of a foreground against a constant 0-valued background, and that the affine transformations $\boldsymbol{A_1}, \boldsymbol{A_2}$ do not cause the foreground to go outside the image canvas. 
+\item Class $\mathcal{S}_2$ which consists of images obtained by applying an intensity transformation $I^i_{new}(x,y) = \alpha (I^i_{old}(x,y))^2 + \beta (I^i_{old}(x,y)) + \gamma$ to the images in $\mathcal{S}$, where $\alpha,\beta,\gamma$ are known.  
+\item Class $\mathcal{S}_4$ which consists of images obtained by downsampling the images in $\mathcal{S}$ by a factor of $k$ in both X and Y directions. 
+\item Class $\mathcal{S}_5$ which consists of images obtained by applying a blur kernel which is known to be a linear combination of blur kernels belonging to a known set $\mathcal{B}$, to the images in $\mathcal{S}$. 
+\item Class $\mathcal{S}_6$ which consists of 1D signals obtained by applying a Radon transform in a known angle $\theta$ to the images in $\mathcal{S}$. 
+\textsf{[4 x 5 = 20 points]}
+\end{enumerate}
+
+\item Explain how you will minimize the following cost functions efficiently. In each case, mention any one application in image processing where the problem arises.  \textsf{[4 x 5 = 20 points]}
+\begin{enumerate}
+\item $J_1(\boldsymbol{A_r}) = \|\boldsymbol{A}-\boldsymbol{A_r}\|^2_F$, where $\boldsymbol{A}$ is a known $m \times n$ matrix of rank greater than $r$, and $\boldsymbol{A_r}$ is a rank-$r$ matrix, where $r < m, r < n$. 
+\item $J_2(\boldsymbol{R}) = \|\boldsymbol{A}-\boldsymbol{R} \boldsymbol{B}\|^2_F$, where $\boldsymbol{A} \in \mathbb{R}^{n \times m}, \boldsymbol{B} \in \mathbb{R}^{n \times m}, \boldsymbol{R} \in \mathbb{R}^{n \times n}, m > n$ and $\boldsymbol{R}$ is constrained to be orthonormal. Note that $\boldsymbol{A}$ and $\boldsymbol{B}$ are both known.
+\item $J_3(\boldsymbol{A}) = \|\boldsymbol{C}-\boldsymbol{A}\|^2_F + \lambda \|\boldsymbol{A}\|_1$, where matrix $\boldsymbol{C}$ is known.
+\item $J_4(\boldsymbol{A}) = \|\boldsymbol{C}-\boldsymbol{A}\|^2_F + \lambda \|\boldsymbol{A}\|_*$, where matrix $\boldsymbol{C}$ is known.
+\end{enumerate}
+
+\end{enumerate}
+\end{document}
