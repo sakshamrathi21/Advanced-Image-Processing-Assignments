@@ -1,0 +1,183 @@
+function robust_pca_experiment()
+    n1 = 800;
+    n2 = 900;
+    
+    rank_values = [10, 30, 50, 75, 100, 125, 150, 200];
+    sparsity_fractions = [0.01, 0.02, 0.03, 0.04, 0.06, 0.08, 0.1, 0.15];
+    
+    num_trials = 15;
+    success_prob = zeros(length(rank_values), length(sparsity_fractions));
+    successful_case = [];
+    unsuccessful_case = [];
+    
+    for i = 1:length(rank_values)
+        r = rank_values(i);
+        
+        for j = 1:length(sparsity_fractions)
+            fs = sparsity_fractions(j);
+            
+            fprintf('Testing r = %d, fs = %.3f\n', r, fs);
+            
+            successes = 0;
+            
+            for trial = 1:num_trials
+                [L_true, S_true, M] = generate_test_data(n1, n2, r, fs);
+                lambda = 1/sqrt(max(n1, n2));
+                tic;
+                [L_hat, S_hat] = rpca_alm(M, lambda);
+                elapsed_time = toc;
+                L_error = norm(L_true - L_hat, 'fro') / norm(L_true, 'fro');
+                S_error = norm(S_true - S_hat, 'fro') / norm(S_true, 'fro');
+                
+                is_success = (L_error <= 0.001) && (S_error <= 0.001);
+                
+                if is_success
+                    successes = successes + 1;
+                end
+                
+                if isempty(successful_case) && is_success
+                    successful_case.r = r;
+                    successful_case.fs = fs;
+                    successful_case.L_true = L_true;
+                    successful_case.S_true = S_true;
+                    successful_case.L_hat = L_hat;
+                    successful_case.S_hat = S_hat;
+                end
+                
+                if isempty(unsuccessful_case) && ~is_success && trial > 5
+                    unsuccessful_case.r = r;
+                    unsuccessful_case.fs = fs;
+                    unsuccessful_case.L_true = L_true;
+                    unsuccessful_case.S_true = S_true;
+                    unsuccessful_case.L_hat = L_hat;
+                    unsuccessful_case.S_hat = S_hat;
+                end
+                
+                fprintf('  Trial %d: Success = %d, Time = %.2f s\n', trial, is_success, elapsed_time);
+            end
+            success_prob(i, j) = successes / num_trials;
+        end
+    end
+
+    figure('Position', [100, 100, 800, 600]);
+    imagesc(success_prob);
+    colormap('gray');
+    colorbar;
+    
+    xticks(1:length(sparsity_fractions));
+    yticks(1:length(rank_values));
+    xticklabels(sparsity_fractions);
+    yticklabels(rank_values);
+    
+    xlabel('Sparsity Fraction (fs)');
+    ylabel('Rank (r)');
+    title('Success Probability of RPCA-ALM');
+    
+    if ~isempty(successful_case)
+        visualize_case(successful_case, 'Successful Case');
+    end
+    
+    if ~isempty(unsuccessful_case)
+        visualize_case(unsuccessful_case, 'Unsuccessful Case');
+    end
+end
+
+function [L, S, M] = generate_test_data(n1, n2, r, fs)
+    A = randn(n1, r);
+    B = randn(n2, r);
+    L = A * B';
+    
+    L = L / norm(L, 'fro') * n1;
+    
+    S = zeros(n1, n2);
+    s = round(fs * n1 * n2);
+    
+    idx = randperm(n1 * n2, s);
+    [I, J] = ind2sub([n1, n2], idx);
+    
+    for k = 1:length(I)
+        S(I(k), J(k)) = 3 * randn(); 
+    end
+
+    M = L + S;
+end
+
+function [L, S] = rpca_alm(D, lambda)
+    [m, n] = size(D);
+    Y = D / max(norm(D, 2), lambda^(-1) * norm(D, Inf));
+    L = zeros(m, n);
+    S = zeros(m, n);
+    mu = 1.25 / norm(D, 2);
+    mu_bar = mu * 1e7;
+    rho = 1.5;
+    tol = 1e-7;
+    max_iter = 500;
+    
+    iter = 0;
+    converged = false;
+    
+    while ~converged && iter < max_iter
+        iter = iter + 1;
+        temp = D - S + Y/mu;
+        [U, Sigma, V] = svd(temp, 'econ');
+        sigma = diag(Sigma);
+        svt = soft_threshold(sigma, 1/mu);
+        rank_L = sum(svt > 0);
+        L = U(:, 1:rank_L) * diag(svt(1:rank_L)) * V(:, 1:rank_L)';
+        temp = D - L + Y/mu;
+        S = sign(temp) .* max(abs(temp) - lambda/mu, 0);
+        Z = D - L - S;
+        Y = Y + mu * Z;
+        mu = min(rho * mu, mu_bar);
+        err = norm(Z, 'fro') / norm(D, 'fro');
+        if err < tol
+            converged = true;
+        end
+    end
+end
+
+function y = soft_threshold(x, t)
+    y = sign(x) .* max(abs(x) - t, 0);
+end
+
+function visualize_case(case_data, title_str)
+    figure('Position', [100, 100, 1200, 300]);
+    subplot(2, 4, 1);
+    imagesc(case_data.L_true(1:200, 1:200));
+    title('True L (subset)');
+    colorbar;
+    
+    subplot(2, 4, 2);
+    imagesc(case_data.S_true(1:200, 1:200));
+    title('True S (subset)');
+    colorbar;
+    
+    subplot(2, 4, 3);
+    imagesc(case_data.L_true(1:200, 1:200) + case_data.S_true(1:200, 1:200));
+    title('M = L + S (subset)');
+    colorbar;
+    
+    subplot(2, 4, 5);
+    imagesc(case_data.L_hat(1:200, 1:200));
+    title('Estimated L (subset)');
+    colorbar;
+    
+    subplot(2, 4, 6);
+    imagesc(case_data.S_hat(1:200, 1:200));
+    title('Estimated S (subset)');
+    colorbar;
+    
+    subplot(2, 4, 7);
+    L_error = norm(case_data.L_true - case_data.L_hat, 'fro') / norm(case_data.L_true, 'fro');
+    S_error = norm(case_data.S_true - case_data.S_hat, 'fro') / norm(case_data.S_true, 'fro');
+    imagesc(abs(case_data.L_true(1:200, 1:200) - case_data.L_hat(1:200, 1:200)));
+    title(['L Error: ' num2str(L_error, '%.6f')]);
+    colorbar;
+    
+    subplot(2, 4, 8);
+    imagesc(abs(case_data.S_true(1:200, 1:200) - case_data.S_hat(1:200, 1:200)));
+    title(['S Error: ' num2str(S_error, '%.6f')]);
+    colorbar;
+    
+    suptitle([title_str ': r = ' num2str(case_data.r) ', fs = ' num2str(case_data.fs)]);
+end
