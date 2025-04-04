@@ -70,8 +70,22 @@ we have adhered to the principles of academic honesty while completing and submi
 \section*{Question 3}
 
 \begin{solution}{Solution}
-
-  
+Here is the approach we can use:
+\begin{enumerate}
+  \item The matrix $M$ is of size $n_1 \times n_2$ with an unknown rank $r$. The measurement matrix $Y$ is of size $m \times n_2$ obtained by taking dot products of the columns of $M$ with $m$ different random vectors drawn from a zero-mean Gaussian distribution. This means that the measurements are of the form:
+  \[
+  Y = A(M)
+  \]
+  where $A$ is the linear operator that takes the dot product with the random vectors.
+  \item From lecture slides, we have that random Gaussian Matrices satisfy the RIP condition. We can even use Theorem 2 from lecture slides, which states that if a matrix $A \in \mathbb{R}^{m\times n_1n_2}$ such that $\delta_{5r}(A) < 0.1$ for $r \geq 1$ and $M \in \mathbb{R}^{n_1\times n_2}$ has rank at most $r$, then there exists a unique solution to the following optimization problem:
+  \[M^* = min_M||M||_*\] 
+  subject to $Y = Avec(M)$ (which is the same as $Y = A(M)$).
+  \item Our matrix satisfies the RIP condition, so we can use the optimization problem to recover the matrix $M$.
+  \item There are various algorithms to solve the optimization problem such as a simple gradient descent on the loss function ||$Y - A(M)||_2^2 + \lambda ||M||_*$ will also work. 
+  \item Now, since we have got our matrix $M$ (which is unique from the above therem), we will perform SVD on it to get the rank $r$ matrix. We can use the Singular Value Decomposition (SVD) to decompose the matrix $M$ into three matrices:
+  \[ M = U \Sigma V^T \]
+  where $U$ is an orthogonal matrix of size $n_1 \times n_1$, $\Sigma$ is a diagonal matrix of size $n_1 \times n_2$ with the singular values on the diagonal, and $V$ is an orthogonal matrix of size $n_2 \times n_2$. The rank of the matrix $M$ is equal to the number of non-zero singular values in $\Sigma$ (we need to zero out the small singular values). Hence, we have got the rank of the matrix $M$.
+\end{enumerate}
 
 \end{solution}
 
