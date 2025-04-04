@@ -81,7 +81,7 @@ Here is the approach we can use:
   \[M^* = min_M||M||_*\] 
   subject to $Y = Avec(M)$ (which is the same as $Y = A(M)$).
   \item Our matrix satisfies the RIP condition, so we can use the optimization problem to recover the matrix $M$.
-  \item There are various algorithms to solve the optimization problem such as a simple gradient descent on the loss function ||$Y - A(M)||_2^2 + \lambda ||M||_*$ will also work. 
+  \item There are various algorithms to solve the optimization problem such as a simple gradient descent on the loss function $||Y - A(M)||_2^2 + \lambda ||M||_*$ will also work. 
   \item Now, since we have got our matrix $M$ (which is unique from the above therem), we will perform SVD on it to get the rank $r$ matrix. We can use the Singular Value Decomposition (SVD) to decompose the matrix $M$ into three matrices:
   \[ M = U \Sigma V^T \]
   where $U$ is an orthogonal matrix of size $n_1 \times n_1$, $\Sigma$ is a diagonal matrix of size $n_1 \times n_2$ with the singular values on the diagonal, and $V$ is an orthogonal matrix of size $n_2 \times n_2$. The rank of the matrix $M$ is equal to the number of non-zero singular values in $\Sigma$ (we need to zero out the small singular values). Hence, we have got the rank of the matrix $M$.
