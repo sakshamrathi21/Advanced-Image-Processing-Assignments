@@ -80,6 +80,7 @@ function robust_pca_experiment()
     if ~isempty(unsuccessful_case)
         visualize_case(unsuccessful_case, 'Unsuccessful Case');
     end
+    saveas(gcf, 'success_probability_heatmap.png');
 end
 
 function [L, S, M] = generate_test_data(n1, n2, r, fs)
@@ -179,5 +180,10 @@ function visualize_case(case_data, title_str)
     title(['S Error: ' num2str(S_error, '%.6f')]);
     colorbar;
     
-    suptitle([title_str ': r = ' num2str(case_data.r) ', fs = ' num2str(case_data.fs)]);
+    % suptitle([title_str ': r = ' num2str(case_data.r) ', fs = ' num2str(case_data.fs)]);
+    sgtitle([title_str ': r = ' num2str(case_data.r) ', fs = ' num2str(case_data.fs)]);
+
+    % Save figure with descriptive name
+    filename = [lower(strrep(title_str, ' ', '_')) '_r' num2str(case_data.r) '_fs' num2str(case_data.fs) '.png'];
+    saveas(gcf, filename);
 end
