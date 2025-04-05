@@ -4,7 +4,6 @@ function robust_pca_experiment()
     
     rank_values = [10, 30, 50, 75, 100, 125, 150, 200];
     sparsity_fractions = [0.01, 0.02, 0.03, 0.04, 0.06, 0.08, 0.1, 0.15];
-    
     num_trials = 15;
     success_prob = zeros(length(rank_values), length(sparsity_fractions));
     successful_case = [];
