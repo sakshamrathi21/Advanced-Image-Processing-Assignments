@@ -80,13 +80,38 @@ we have adhered to the principles of academic honesty while completing and submi
   Here is the success probability image:
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\textwidth]{../images/success_probability_heatmap.png}
+    \includegraphics[width=\textwidth]{../code/success_probability_heatmap.png}
     \caption{Success Probability Heatmap}
-    \label{fig:mozorov}
   \end{figure}
 
 
+
+  As we can see, mostly we are able to get a success of 1 for all 15 iterations, however for higher sparstiy fractions, or larger rank, we get lower success too. It also depends on the number of iterations for which we run our algorithm.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../code/successful_case_r10_fs0.01.png}
+    \caption{Sucessful case}
+  \end{figure}
+
+  The above shows one of the successful cases.
+
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../code/unsuccessful_case_r125_fs0.15.png}
+    \caption{Sucessful case}
+  \end{figure}
+
+  The above shows one of the unsuccessful cases.
+
+
+  As we can see in the unsuccessful case, there is a lot of noise in L, and the error is larger enough.
+
+
 \end{solution}
+
+
 
 
 \end{document}
