@@ -71,6 +71,7 @@ function robust_pca_experiment()
     xlabel('Sparsity Fraction (fs)');
     ylabel('Rank (r)');
     title('Success Probability of RPCA-ALM');
+    saveas(gcf, 'success_probability_heatmap.png');
     
     if ~isempty(successful_case)
         visualize_case(successful_case, 'Successful Case');
@@ -79,7 +80,7 @@ function robust_pca_experiment()
     if ~isempty(unsuccessful_case)
         visualize_case(unsuccessful_case, 'Unsuccessful Case');
     end
-    saveas(gcf, 'success_probability_heatmap.png');
+    
 end
 
 function [L, S, M] = generate_test_data(n1, n2, r, fs)

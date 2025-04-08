@@ -1,0 +1,8 @@
+main
+Testing r = 10, fs = 0.010
+  Trial 1: Success = 1, Time = 3.57 s
+  Trial 2: Success = 1, Time = 3.76 s
+  Trial 3: Success = 1, Time = 3.49 s
+  Trial 4: Success = 1, Time = 3.65 s
+  Trial 5: Success = 1, Time = 3.71 s
+  Trial 6: Success = 1, Time = 3.18 s
