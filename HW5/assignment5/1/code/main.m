@@ -58,7 +58,7 @@ function robust_pca_experiment()
         end
     end
 
-    figure('Position', [100, 100, 800, 600]);
+    fig = figure('Position', [100, 100, 800, 600]);
     imagesc(success_prob);
     colormap('gray');
     colorbar;
@@ -71,7 +71,7 @@ function robust_pca_experiment()
     xlabel('Sparsity Fraction (fs)');
     ylabel('Rank (r)');
     title('Success Probability of RPCA-ALM');
-    saveas(gcf, 'success_probability_heatmap.png');
+    saveas(fig, 'success_probability_heatmap.png');
     
     if ~isempty(successful_case)
         visualize_case(successful_case, 'Successful Case');
@@ -142,7 +142,7 @@ function y = soft_threshold(x, t)
 end
 
 function visualize_case(case_data, title_str)
-    figure('Position', [100, 100, 1200, 300]);
+    fig = figure('Position', [100, 100, 1200, 300]);
     subplot(2, 4, 1);
     imagesc(case_data.L_true(1:200, 1:200));
     title('True L (subset)');
@@ -185,5 +185,5 @@ function visualize_case(case_data, title_str)
 
     % Save figure with descriptive name
     filename = [lower(strrep(title_str, ' ', '_')) '_r' num2str(case_data.r) '_fs' num2str(case_data.fs) '.png'];
-    saveas(gcf, filename);
+    saveas(fig, filename);
 end
