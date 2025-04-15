@@ -1,4 +1,4 @@
-function robust_pca_experiment()
+function main()
     n1 = 800;
     n2 = 900;
     
@@ -103,43 +103,82 @@ function [L, S, M] = generate_test_data(n1, n2, r, fs)
     M = L + S;
 end
 
+% function [L, S] = rpca_alm(D, lambda)
+%     [m, n] = size(D);
+%     Y = D / max(norm(D, 2), lambda^(-1) * norm(D, Inf));
+%     L = zeros(m, n);
+%     S = zeros(m, n);
+%     mu = 1.25 / norm(D, 2);
+%     mu_bar = mu * 1e7;
+%     rho = 1.5;
+%     tol = 1e-7;
+%     max_iter = 500;
+    
+%     iter = 0;
+%     converged = false;
+    
+%     while ~converged && iter < max_iter
+%         iter = iter + 1;
+%         temp = D - S + Y/mu;
+%         [U, Sigma, V] = svd(temp, 'econ');
+%         sigma = diag(Sigma);
+%         svt = soft_threshold(sigma, 1/mu);
+%         rank_L = sum(svt > 0);
+%         L = U(:, 1:rank_L) * diag(svt(1:rank_L)) * V(:, 1:rank_L)';
+%         temp = D - L + Y/mu;
+%         S = sign(temp) .* max(abs(temp) - lambda/mu, 0);
+%         Z = D - L - S;
+%         Y = Y + mu * Z;
+%         mu = min(rho * mu, mu_bar);
+%         err = norm(Z, 'fro') / norm(D, 'fro');
+%         if err < tol
+%             converged = true;
+%         end
+%     end
+% end
+
 function [L, S] = rpca_alm(D, lambda)
-    [m, n] = size(D);
-    Y = D / max(norm(D, 2), lambda^(-1) * norm(D, Inf));
-    L = zeros(m, n);
-    S = zeros(m, n);
-    mu = 1.25 / norm(D, 2);
-    mu_bar = mu * 1e7;
-    rho = 1.5;
-    tol = 1e-7;
-    max_iter = 500;
-    
-    iter = 0;
-    converged = false;
-    
-    while ~converged && iter < max_iter
-        iter = iter + 1;
-        temp = D - S + Y/mu;
-        [U, Sigma, V] = svd(temp, 'econ');
-        sigma = diag(Sigma);
-        svt = soft_threshold(sigma, 1/mu);
-        rank_L = sum(svt > 0);
-        L = U(:, 1:rank_L) * diag(svt(1:rank_L)) * V(:, 1:rank_L)';
-        temp = D - L + Y/mu;
-        S = sign(temp) .* max(abs(temp) - lambda/mu, 0);
-        Z = D - L - S;
-        Y = Y + mu * Z;
-        mu = min(rho * mu, mu_bar);
-        err = norm(Z, 'fro') / norm(D, 'fro');
+    mu = 25 * lambda;
+    tol = 1e-6;
+    max_iter = 1000;
+    [L, S] = RobustPCA(D, lambda, mu, tol, max_iter);
+end
+
+function [L, S] = RobustPCA(X, lambda, mu, tol, max_iter)
+    [M, N] = size(X);
+    unobserved = isnan(X);
+    X(unobserved) = 0;
+    normX = norm(X, 'fro');
+    L = zeros(M, N);
+    S = zeros(M, N);
+    Y = zeros(M, N);
+    for iter = 1:max_iter
+        L = Do(1/mu, X - S + (1/mu)*Y);
+        S = soft_thresh(lambda/mu, X - L + (1/mu)*Y);
+        Z = X - L - S;
+        Z(unobserved) = 0;
+        Y = Y + mu*Z;
+        err = norm(Z, 'fro') / normX;
         if err < tol
-            converged = true;
+            break;
         end
     end
 end
 
-function y = soft_threshold(x, t)
-    y = sign(x) .* max(abs(x) - t, 0);
+function r = soft_thresh(tau, X)
+    r = sign(X) .* max(abs(X) - tau, 0);
 end
+
+function r = Do(tau, X)
+    [U, S, V] = svd(X, 'econ');
+    S_thresh = soft_thresh(tau, S);
+    r = U * S_thresh * V';
+end
+
+
+% function y = soft_threshold(x, t)
+%     y = sign(x) .* max(abs(x) - t, 0);
+% end
 
 function visualize_case(case_data, title_str)
     fig = figure('Position', [100, 100, 1200, 300]);
