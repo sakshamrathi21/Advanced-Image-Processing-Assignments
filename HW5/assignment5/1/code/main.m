@@ -140,7 +140,7 @@ end
 
 function [L, S] = rpca_alm(D, lambda)
     mu = 25 * lambda;
-    tol = 1e-5;
+    tol = 1e-4;
     max_iter = 1000;
     [L, S] = RobustPCA(D, lambda, mu, tol, max_iter);
 end
