@@ -1,0 +1,6 @@
+main
+Testing r = 10, fs = 0.010
+  Trial 1: Success = 1, Time = 3.41 s, L_error = 5.35e-06, S_error = 2.75e-05
+  Trial 2: Success = 1, Time = 3.09 s, L_error = 9.02e-06, S_error = 9.57e-06
+  Trial 3: Success = 1, Time = 3.30 s, L_error = 2.16e-06, S_error = 2.09e-05
+  Trial 4: Success = 1, Time = 3.49 s, L_error = 6.31e-06, S_error = 1.93e-05

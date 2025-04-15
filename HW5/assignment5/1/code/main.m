@@ -52,7 +52,8 @@ function main()
                     unsuccessful_case.S_hat = S_hat;
                 end
                 
-                fprintf('  Trial %d: Success = %d, Time = %.2f s\n', trial, is_success, elapsed_time);
+                fprintf('  Trial %d: Success = %d, Time = %.2f s, L_error = %.2e, S_error = %.2e\n', trial, is_success, elapsed_time, L_error, S_error);
+
             end
             success_prob(i, j) = successes / num_trials;
         end
@@ -139,7 +140,7 @@ end
 
 function [L, S] = rpca_alm(D, lambda)
     mu = 25 * lambda;
-    tol = 1e-6;
+    tol = 1e-5;
     max_iter = 1000;
     [L, S] = RobustPCA(D, lambda, mu, tol, max_iter);
 end
@@ -153,7 +154,7 @@ function [L, S] = RobustPCA(X, lambda, mu, tol, max_iter)
     S = zeros(M, N);
     Y = zeros(M, N);
     for iter = 1:max_iter
-        L = Do(1/mu, X - S + (1/mu)*Y);
+        L = D_op(1/mu, X - S + (1/mu)*Y);
         S = soft_thresh(lambda/mu, X - L + (1/mu)*Y);
         Z = X - L - S;
         Z(unobserved) = 0;
@@ -169,7 +170,7 @@ function r = soft_thresh(tau, X)
     r = sign(X) .* max(abs(X) - tau, 0);
 end
 
-function r = Do(tau, X)
+function r = D_op(tau, X)
     [U, S, V] = svd(X, 'econ');
     S_thresh = soft_thresh(tau, S);
     r = U * S_thresh * V';
