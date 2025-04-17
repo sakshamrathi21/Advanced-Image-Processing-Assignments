@@ -78,6 +78,83 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \begin{solution}{Solution}
 
+\subsection{Part (a)}
+
+\subsubsection{Cost Function:}
+\begin{equation}
+J_1(A_r) = \|A - A_r\|_F^2
+\end{equation}
+where \( A \in \mathbb{R}^{m \times n} \) is a known matrix, and \( A_r \) is a rank-\( r \) approximation of \( A \) with \( r < m, r < n \).
+
+\subsubsection{Minimization Method:}  
+Compute the rank-\( r \) approximation \( A_r \) using the \textbf{Singular Value Decomposition (SVD)} of \( A \). Let:
+\begin{equation}
+A = U \Sigma V^T
+\end{equation}
+Then the best rank-\( r \) approximation is:
+\begin{equation}
+A_r = U_r \Sigma_r V_r^T
+\end{equation}
+where \( \Sigma_r \) retains only the top \( r \) singular values.
+
+\subsubsection{Application}  
+\textbf{Image Compression.} Low-rank approximation is widely used to compress images while retaining the most significant information.
+
+\subsection{Part (b)}
+
+\subsubsection{Cost Function}
+\begin{equation}
+J_2(R) = \|A - RB\|_F^2
+\end{equation}
+where \( A, B \in \mathbb{R}^{n \times m} \), \( m > n \), and \( R \in \mathbb{R}^{n \times n} \) is an orthonormal matrix (\( R^T R = I \)).
+
+\subsubsection{Minimization Method}  
+We compute the SVD of \( AB^T \):
+\begin{equation}
+AB^T = U \Sigma V^T
+\end{equation}
+Then the optimal \( R \) is:
+\begin{equation}
+R = UV^T
+\end{equation}
+
+\subsubsection{Application}  
+\textbf{Image Registration.} Used to align two sets of landmark points or feature descriptors under rotation/reflection.
+
+\subsection{Part (c)}
+
+\subsubsection{Cost Function}
+\begin{equation}
+J_3(A) = \|C - A\|_F^2 + \lambda \|A\|_1
+\end{equation}
+where \( C \in \mathbb{R}^{m \times n} \) is known and \( \|\cdot\|_1 \) denotes element-wise \( \ell_1 \)-norm.
+
+\subsubsection{Minimization Method}  
+This is a \textbf{soft-thresholding problem}, solved using the \textbf{Iterative Shrinkage-Thresholding Algorithm (ISTA)} or \textbf{FISTA} for faster convergence. A closed-form solution for element-wise shrinkage is:
+\begin{equation}
+A_{ij} = \text{sign}(C_{ij}) \cdot \max(|C_{ij}| - \lambda, 0)
+\end{equation}
+
+\subsubsection{Application}  
+\textbf{Image Denoising.} Promotes sparsity to eliminate noise while preserving important signal components.
+
+\subsection{Part (d)}
+
+\subsubsection{Cost Function}
+\begin{equation}
+J_4(A) = \|C - A\|_F^2 + \lambda \|A\|_*
+\end{equation}
+where \( \|\cdot\|_* \) is the nuclear norm (sum of singular values), and \( C \in \mathbb{R}^{m \times n} \) is known.
+
+\subsubsection{Minimization Method}  
+Solved using the \textbf{Singular Value Thresholding (SVT)} algorithm. Let \( C = U \Sigma V^T \) be the SVD of \( C \). Then apply soft-thresholding to singular values:
+\begin{equation}
+A = U \cdot \text{diag}(\max(\sigma_i - \lambda, 0)) \cdot V^T
+\end{equation}
+
+\subsubsection{Application}  
+\textbf{Image Inpainting.} Used to recover missing parts of an image by promoting low-rank structure.
+
 \end{solution}
 
 

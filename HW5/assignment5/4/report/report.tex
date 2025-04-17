@@ -78,6 +78,107 @@ we have adhered to the principles of academic honesty while completing and submi
 
 \begin{solution}{Solution}
 
+\noindent Given a learned dictionary D, any image $I$ can be represented as a sparse linear combination of the dictionary atoms. The representation is given by:
+\begin{equation}
+    I = D \cdot \alpha
+\end{equation}
+where $\alpha$ is the sparse coefficient vector. 
+
+\subsection*{Part (a)}
+
+Considering the subset $\mathcal{P}_1$ of the class of images $\mathcal{S}$, the images in $\mathcal{P}_1$ are scaled by the affine transformation $A_1$ and the images in $\mathcal{P}_2$ are scaled by the affine transformation $A_2$. Thus, any image in $\mathcal{P}_1$ can be represented as:
+
+\begin{equation}
+  \tilde{I} = 
+  \begin{cases}
+  A_{1} D\,\alpha, & \text{if } I \in \mathcal{P}_1,\\
+  A_{2} D\,\alpha, & \text{if } I \in \mathcal{S}_2.
+  \end{cases}
+\end{equation}
+
+\noindent Now, we consider the augemnted dictionary $\tilde{D}$, which is obtained by augmenting the original dictionary $D$ with the affine transformations $A_1$ and $A_2$. The augmented dictionary can be represented as:
+\begin{equation}
+    \tilde{D} = \begin{bmatrix}
+    A_{1} D \hspace{5pt} A_{2} D
+    \end{bmatrix}
+\end{equation}
+This dictionary $\tilde{D}$ can be used to represent the images in both $\mathcal{P}_1$ and $\mathcal{P}_2$. The representation of the images in $\mathcal{P}_1$ and $\mathcal{P}_2$ can be expressed as:
+\begin{equation}
+    \tilde{I} = \tilde{D} \cdot \tilde{\alpha}
+\end{equation}
+where $\tilde{\alpha}$ is the augmented coefficient vector. The augmented coefficient vector can be represented as:
+\begin{equation}
+    \tilde{\alpha} = \begin{bmatrix}
+    \alpha \\
+    0
+    \end{bmatrix}
+\end{equation}
+where $\alpha$ is the original coefficient vector and $0$ is a zero vector of appropriate size. This representation allows us to represent the images in both $\mathcal{P}_1$ and $\mathcal{P}_2$ using the augmented dictionary $\tilde{D}$ and the augmented coefficient vector $\tilde{\alpha}$. Note that $\tilde{\alpha}$ positions the 0 vector and $\alpha$ as the first or second half of the augmented coefficient vector, depending on whether the image is from $\mathcal{P}_1$ or $\mathcal{P}_2$.
+
+\subsection*{Part (b)}
+\noindent Class $\mathcal{S}_2$ is obtained by applying an intensity transformation given by :
+\begin{equation}
+    I^i_{new}(x, y) = \alpha \cdot (I^i_{old}(x, y))^2 + \beta
+ \cdot I^i_{old}(x, y) + \gamma
+\end{equation}
+To find the dictionary that can represent the images in $\mathcal{S}_2$, we can use the following approach:
+
+\begin{enumerate}
+    \item This is nonlinear pointwise transformation. As the dictionary learning is linear, the transformation cannot be incorporated by simply transforming the atoms of the dictionary.
+    \item We assume small signal variations that the dictionary, we approximate the effect of this transformation using a Taylor expansion. The first-order approximation of the transformation can be represented as:
+    \begin{equation}
+        D_i^{new} \approx \alpha \cdot D_i^2 + \beta \cdot D_i + \gamma \mathbf{1}
+    \end{equation}
+    \begin{equation}
+        D_{S_2} = \left[ \alpha D^2 + \beta D + \gamma \right]
+    \end{equation}
+    where $D^2$ is the element-wise square of the matrix $D$.
+\end{enumerate}
+
+
+\subsection*{Part (c)}
+For Class $\mathcal{S}_4$, the images are obtained by downsampling the images in Class $\mathcal{S}_3$ by a factor of k in both the x and y directions. The image in the new class can be represented as:
+\begin{equation}
+    I^i_{new}(x, y) = I^i_{old}(kx, ky)
+\end{equation}
+To obtain the dictionary of the new class, we can similarly downsample the dictionary of the old class by a factor of k in both the x and y directions. The downsampled dictionary can be represented as:
+\begin{equation}
+    D^i_{new}(x, y) = D^i_{old}(kx, ky)
+\end{equation}
+This new dictionary is a valid dictionary for the new class of images, as it can represent the images in Class $\mathcal{S}_4$ using the same sparse linear combination of the dictionary atoms. The representation of the images in Class $\mathcal{S}_4$ can be expressed as:
+\begin{equation}
+    I^i_{new}(x, y) = D^i_{new} \cdot \alpha^i_{new}
+\end{equation}
+where $\alpha^i_{new}$ is the sparse coefficient vector for the new class of images. 
+
+
+\subsection*{Part (d)}
+
+Let \( \mathcal{S}_5 \) be obtained by convolving images in \( \mathcal{S} \) with a blur kernel \( h = \sum_i \lambda_i b_i \), where \( b_i \in B \) are known basis blur kernels, and \( \lambda_i \) are known coefficients.
+
+\noindent Let \( C_{b_i} \in \mathbb{R}^{n \times n} \) be the convolution matrix corresponding to blur kernel \( b_i \). The blur operation can be modeled as:
+
+\begin{equation}
+C_h = \sum_i \lambda_i C_{b_i}
+\end{equation}
+
+\noindent Then, we apply \( C_h \) to each dictionary atom:
+\begin{equation}
+D_{S_5} = C_h D = \left( \sum_i \lambda_i C_{b_i} \right) D = \sum_i \lambda_i C_{b_i} D
+\end{equation}
+This transformed dictionary represents the effect of blur on each dictionary atom.
+
+
+\subsection*{Part (e)}
+
+\( \mathcal{S}_6 \) consists of 1D signals obtained by applying the Radon transform at a known angle \( \theta \) to each image in \( \mathcal{S} \). Define \( \mathcal{R}_\theta: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m} \) as the Radon transform operator at angle \( \theta \).
+
+\noindent Then, apply \( \mathcal{R}_\theta \) to each atom in \( D \) to get:
+\begin{equation}
+D_{S_6} = \mathcal{R}_\theta D
+\end{equation}
+This transformed dictionary can now sparsely represent the Radon projections of images in \( \mathcal{S} \).
+
 \end{solution}
 
 
